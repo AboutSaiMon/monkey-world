@@ -1,5 +1,8 @@
 package core;
 
+/**
+ * Check if my SVN works.
+ */
 public class Support{
 	
 	
@@ -8,7 +11,6 @@ public class Support{
 	public int boxPosition;
 	
 	public Support() {
-		// TODO Auto-generated constructor stub
 		monkeyPosition = -1;
 		bananasPosition = 0;
 		boxPosition = 1;
