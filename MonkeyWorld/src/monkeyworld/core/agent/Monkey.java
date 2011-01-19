@@ -17,7 +17,6 @@
  */
 package monkeyworld.core.agent;
 
-import org.oreilly.is.Action;
 import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
@@ -29,8 +28,15 @@ public class Monkey implements Agent {
 
 	private boolean alive;
 	
+	/**
+	 * 
+	 */
+	public Monkey() {
+		alive = true;
+	}
+	
 	@Override
-	public Action execute(Percept percept) {
+	public MonkeyAction execute(Percept percept) {
 		return null;
 	}
 

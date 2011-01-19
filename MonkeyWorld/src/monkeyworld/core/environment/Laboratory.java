@@ -18,27 +18,29 @@
 package monkeyworld.core.environment;
 
 import monkeyworld.core.agent.Monkey;
+import monkeyworld.core.agent.MonkeyAction;
+import monkeyworld.core.agent.MonkeyPerception;
 
 import org.oreilly.is.Environment;
 
-
 /**
- *
+ * 
  * @author Deep Blue Team
  */
-public abstract class Laboratory implements Environment {
-	
+public class Laboratory implements Environment {
+
 	private Monkey monkey;
 	private EnvType envType;
+	private EnvStatus envStatus;
 	private boolean done;
-	
+
 	/**
 	 * 
 	 */
 	public Laboratory(Monkey monkey) {
 		this(monkey, EnvType.STATIC);
 	}
-	
+
 	public Laboratory(Monkey monkey, EnvType envType) {
 		this.monkey = monkey;
 		this.envType = envType;
@@ -48,6 +50,39 @@ public abstract class Laboratory implements Environment {
 	@Override
 	public boolean isDone() {
 		return !monkey.isAlive();
+	}
+
+	@Override
+	public void step() {
+		if (isDone()) {
+			return;
+		}
+		MonkeyPerception perception = genPerception();
+		MonkeyAction action = monkey.execute(perception);
+	}
+	
+	private MonkeyPerception genPerception() {
+		MonkeyPerception perception = new MonkeyPerception();
+		return perception;
+	}
+
+	@Override
+	public void step(int n) {
+		for( int i = 0; i < n; i++ ) {
+			step();
+		}
+	}
+
+	@Override
+	public void stepUntilDone() {
+		while( !isDone() ) {
+			step();
+		}
+	}
+
+	@Override
+	public double getPerformanceMeasure() {
+		return 0;
 	}
 
 }

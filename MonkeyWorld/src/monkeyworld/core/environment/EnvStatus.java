@@ -15,78 +15,101 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.core.agent;
-
-import org.oreilly.is.Percept;
+package monkeyworld.core.environment;
 
 /**
  *
  * @author Deep Blue Team
  */
-public class MonkeyPerception implements Percept {
+public class EnvStatus {
 
 	private int bananasPosition;
 	private int boxPosition;
 	private int homePosition;
 	private int monkeyPosition;
+	private int stepCount;
 	
 	/**
 	 * 
 	 */
-	public MonkeyPerception() {
+	public EnvStatus() {
 		bananasPosition = 0;
 		boxPosition = 0;
 		homePosition = 0;
 		monkeyPosition = 0;
+		stepCount = 0;
 	}
-	
+
 	/**
 	 * @return the bananasPosition
 	 */
 	public int getBananasPosition() {
 		return bananasPosition;
 	}
+
 	/**
 	 * @param bananasPosition the bananasPosition to set
 	 */
 	public void setBananasPosition(int bananasPosition) {
 		this.bananasPosition = bananasPosition;
 	}
+
 	/**
 	 * @return the boxPosition
 	 */
 	public int getBoxPosition() {
 		return boxPosition;
 	}
+
 	/**
 	 * @param boxPosition the boxPosition to set
 	 */
 	public void setBoxPosition(int boxPosition) {
 		this.boxPosition = boxPosition;
 	}
+
 	/**
 	 * @return the homePosition
 	 */
 	public int getHomePosition() {
 		return homePosition;
 	}
+
 	/**
 	 * @param homePosition the homePosition to set
 	 */
 	public void setHomePosition(int homePosition) {
 		this.homePosition = homePosition;
 	}
+
 	/**
 	 * @return the monkeyPosition
 	 */
 	public int getMonkeyPosition() {
 		return monkeyPosition;
 	}
+
 	/**
 	 * @param monkeyPosition the monkeyPosition to set
 	 */
 	public void setMonkeyPosition(int monkeyPosition) {
 		this.monkeyPosition = monkeyPosition;
+	}
+
+	/**
+	 * Gets the counter of the steps.
+	 * 
+	 * @return the stepCount
+	 */
+	public int getStepCount() {
+		return stepCount;
+	}
+
+	/**
+	 * Increments the counter of the steps.
+	 */
+	public void incrementStepCount() {
+		stepCount++;
 	}
 	
 }
