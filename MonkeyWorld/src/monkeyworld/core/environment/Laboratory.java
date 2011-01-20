@@ -21,6 +21,7 @@ import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.agent.MonkeyAction;
 import monkeyworld.core.agent.MonkeyPerception;
 
+import org.omg.CORBA.NVList;
 import org.oreilly.is.Environment;
 
 /**
@@ -32,11 +33,8 @@ public class Laboratory implements Environment {
 	private Monkey monkey;
 	private EnvType envType;
 	private EnvStatus envStatus;
-	private boolean done;
+	private EnvStatusModifier envModifier;
 
-	/**
-	 * 
-	 */
 	public Laboratory(Monkey monkey) {
 		this(monkey, EnvType.STATIC);
 	}
@@ -44,7 +42,43 @@ public class Laboratory implements Environment {
 	public Laboratory(Monkey monkey, EnvType envType) {
 		this.monkey = monkey;
 		this.envType = envType;
-		this.done = false;
+		envModifier = new EnvStatusModifier();
+		envStatus = envModifier.getStatus();
+	}
+	
+	public Laboratory(Monkey monkey, EnvType envType, int length) {
+		this.monkey = monkey;
+		this.envType = envType;
+		envModifier = new EnvStatusModifier(length);
+		envStatus = envModifier.getStatus();
+	}
+
+	public void setBananasBunch(int position) {
+		envStatus.setBananasBunch(position);
+	}
+
+	public int getBananasBunch() {
+		return envStatus.getBananasBunch();
+	}
+
+	public void setBox(int position) {
+		envStatus.setBox(position);
+	}
+
+	public int getBox() {
+		return envStatus.getBox();
+	}
+
+	public void setHome(int position) {
+		envStatus.setHome(position);
+	}
+
+	public int getHome() {
+		return envStatus.getHome();
+	}
+
+	public int getMonkey() {
+		return envStatus.getMonkey();
 	}
 
 	@Override
@@ -59,23 +93,46 @@ public class Laboratory implements Environment {
 		}
 		MonkeyPerception perception = genPerception();
 		MonkeyAction action = monkey.execute(perception);
+		if (action.isGoOut()) {
+			envModifier.goOut();
+		} else if (action.isGoHome()) {
+			envModifier.goHome();
+		} else if (action.isMoveLeft()) {
+			envModifier.moveLeft();
+		} else if (action.isMoveRight()) {
+			envModifier.moveRight();
+		} else if (action.isPushLeft()) {
+			envModifier.pushLeft();
+		} else if (action.isPushRight()) {
+			envModifier.pushRight();
+		} else if (action.isPullLeft()) {
+			envModifier.pullLeft();
+		} else if (action.isPullRight()) {
+			envModifier.pullRight();
+		} else if (action.isGrab()) {
+			envModifier.grab();
+		}
 	}
-	
+
 	private MonkeyPerception genPerception() {
 		MonkeyPerception perception = new MonkeyPerception();
+		perception.setBananasBunch(envStatus.getBananasBunch());
+		perception.setBox(envStatus.getBox());
+		perception.setHome(envStatus.getHome());
+		perception.setMonkey(envStatus.getMonkey());
 		return perception;
 	}
 
 	@Override
 	public void step(int n) {
-		for( int i = 0; i < n; i++ ) {
+		for (int i = 0; i < n; i++) {
 			step();
 		}
 	}
 
 	@Override
 	public void stepUntilDone() {
-		while( !isDone() ) {
+		while (!isDone()) {
 			step();
 		}
 	}

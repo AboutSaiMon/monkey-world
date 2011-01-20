@@ -25,68 +25,75 @@ import org.oreilly.is.Percept;
  */
 public class MonkeyPerception implements Percept {
 
-	private int bananasPosition;
-	private int boxPosition;
-	private int homePosition;
-	private int monkeyPosition;
+	private int bananasBunch;
+	private int box;
+	private int home;
+	private int monkey;
 	
 	/**
 	 * 
 	 */
 	public MonkeyPerception() {
-		bananasPosition = 0;
-		boxPosition = 0;
-		homePosition = 0;
-		monkeyPosition = 0;
+		bananasBunch = 0;
+		box = 0;
+		home = 0;
+		monkey = home;
 	}
-	
+
 	/**
-	 * @return the bananasPosition
+	 * @return the bananasBunch
 	 */
-	public int getBananasPosition() {
-		return bananasPosition;
+	public int getBananasBunch() {
+		return bananasBunch;
 	}
+
 	/**
-	 * @param bananasPosition the bananasPosition to set
+	 * @param position the bananasBunch to set
 	 */
-	public void setBananasPosition(int bananasPosition) {
-		this.bananasPosition = bananasPosition;
+	public void setBananasBunch(int position) {
+		bananasBunch = position;
 	}
+
 	/**
-	 * @return the boxPosition
+	 * @return the box
 	 */
-	public int getBoxPosition() {
-		return boxPosition;
+	public int getBox() {
+		return box;
 	}
+
 	/**
-	 * @param boxPosition the boxPosition to set
+	 * @param position the box to set
 	 */
-	public void setBoxPosition(int boxPosition) {
-		this.boxPosition = boxPosition;
+	public void setBox(int position) {
+		box = position;
 	}
+
 	/**
-	 * @return the homePosition
+	 * @return the home
 	 */
-	public int getHomePosition() {
-		return homePosition;
+	public int getHome() {
+		return home;
 	}
+
 	/**
-	 * @param homePosition the homePosition to set
+	 * @param position the home to set
 	 */
-	public void setHomePosition(int homePosition) {
-		this.homePosition = homePosition;
+	public void setHome(int position) {
+		home = position;
 	}
+
 	/**
-	 * @return the monkeyPosition
+	 * @return the monkey
 	 */
-	public int getMonkeyPosition() {
-		return monkeyPosition;
+	public int getMonkey() {
+		return monkey;
 	}
+
 	/**
-	 * @param monkeyPosition the monkeyPosition to set
+	 * @param position the monkey to set
 	 */
-	public void setMonkeyPosition(int monkeyPosition) {
-		this.monkeyPosition = monkeyPosition;
+	public void setMonkey(int position) {
+		monkey = position;
 	}
 	
 }

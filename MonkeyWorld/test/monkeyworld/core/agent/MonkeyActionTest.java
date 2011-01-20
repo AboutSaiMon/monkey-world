@@ -18,6 +18,7 @@
 package monkeyworld.core.agent;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -29,86 +30,152 @@ import org.junit.Test;
 public class MonkeyActionTest {
 
 	@Test
-	public void testNoOp() {
-		MonkeyAction action = new MonkeyAction(ActionType.NO_OP);
-		assertThat(action.isNoOp(), is(true));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(false));
+	public void goOut() {
+		MonkeyAction action = new MonkeyAction(ActionType.GO_OUT);
+		assertThat(action.isGoOut(), is(equalTo(true)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
+	
 	@Test
-	public void testClimb() {
-		MonkeyAction action = new MonkeyAction(ActionType.CLIMB);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(true));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(false));
+	public void goHome() {
+		MonkeyAction action = new MonkeyAction(ActionType.GO_HOME);
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(true)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
-	public void testGrab() {
-		MonkeyAction action = new MonkeyAction(ActionType.GRAB);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(true));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(false));
-	}
-
+	
 	@Test
-	public void testMoveLeft() {
+	public void moveLeft() {
 		MonkeyAction action = new MonkeyAction(ActionType.MOVE_LEFT);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(true));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(false));
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(true)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
+	
 	@Test
-	public void testMoveRight() {
+	public void moveRight() {
 		MonkeyAction action = new MonkeyAction(ActionType.MOVE_RIGHT);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(true));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(false));
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(true)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
+	
 	@Test
-	public void testPull() {
-		MonkeyAction action = new MonkeyAction(ActionType.PULL);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(true));
-		assertThat(action.isPush(), is(false));
+	public void pushLeft() {
+		MonkeyAction action = new MonkeyAction(ActionType.PUSH_LEFT);	
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(true)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
+	
 	@Test
-	public void testPush() {
-		MonkeyAction action = new MonkeyAction(ActionType.PUSH);
-		assertThat(action.isNoOp(), is(false));
-		assertThat(action.isClimb(), is(false));
-		assertThat(action.isGrab(), is(false));
-		assertThat(action.isMoveLeft(), is(false));
-		assertThat(action.isMoveRight(), is(false));
-		assertThat(action.isPull(), is(false));
-		assertThat(action.isPush(), is(true));
+	public void pushRight() {
+		MonkeyAction action = new MonkeyAction(ActionType.PUSH_RIGHT);	
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(true)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
 	}
-
+	
+	@Test
+	public void pullLeft() {
+		MonkeyAction action = new MonkeyAction(ActionType.PULL_LEFT);
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(true)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
+	}
+	
+	@Test
+	public void pullRight() {
+		MonkeyAction action = new MonkeyAction(ActionType.PULL_RIGHT);
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(true)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
+	}
+	
+	@Test
+	public void grab() {
+		MonkeyAction action = new MonkeyAction(ActionType.GRAB);	
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(true)));
+		assertThat(action.isNoOp(), is(equalTo(false)));
+	}
+	
+	@Test
+	public void noOp() {
+		MonkeyAction action = new MonkeyAction(ActionType.NO_OP);	
+		assertThat(action.isGoOut(), is(equalTo(false)));
+		assertThat(action.isGoHome(), is(equalTo(false)));
+		assertThat(action.isMoveLeft(), is(equalTo(false)));
+		assertThat(action.isMoveRight(), is(equalTo(false)));
+		assertThat(action.isPushLeft(), is(equalTo(false)));
+		assertThat(action.isPushRight(), is(equalTo(false)));
+		assertThat(action.isPullLeft(), is(equalTo(false)));
+		assertThat(action.isPullRight(), is(equalTo(false)));
+		assertThat(action.isGrab(), is(equalTo(false)));
+		assertThat(action.isNoOp(), is(equalTo(true)));
+	}
 }

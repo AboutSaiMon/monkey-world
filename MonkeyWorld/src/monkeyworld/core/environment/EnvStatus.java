@@ -17,99 +17,153 @@
  */
 package monkeyworld.core.environment;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
- *
+ * 
  * @author Deep Blue Team
  */
 public class EnvStatus {
 
-	private int bananasPosition;
-	private int boxPosition;
-	private int homePosition;
-	private int monkeyPosition;
-	private int stepCount;
-	
-	/**
-	 * 
-	 */
+	private Lock bananasLock;
+	private int bananasBunch;
+	private int box;
+	private int home;
+	private int monkey;
+	private int length;
+	private boolean grabbed;
+
 	public EnvStatus() {
-		bananasPosition = 0;
-		boxPosition = 0;
-		homePosition = 0;
-		monkeyPosition = 0;
-		stepCount = 0;
+		this(10);
+	}
+
+	public EnvStatus(int length) {
+		checkLength(length);
+		this.length = length;
+		home = length + 1;
+		monkey = home;
+		bananasBunch = 0;
+		box = 0;
+		grabbed = false;
+		bananasLock = new ReentrantLock(true);
+	}
+
+	private void checkLength(int length) {
+		if (length < 1) {
+			throw new IllegalArgumentException(
+					"The lenght of the environment has to be at least 1");
+		}
+	}
+
+	private void checkPosition(int position) {
+		if (position < 0 || position >= length) {
+			StringBuilder message = new StringBuilder();
+			message.append("\"" + position + "\" is not a valid position.");
+			message.append(" Please, insert a number between 0 and " + length
+					+ ".");
+			throw new IllegalArgumentException(message.toString());
+		}
 	}
 
 	/**
-	 * @return the bananasPosition
+	 * @return the bananasBunch
 	 */
-	public int getBananasPosition() {
-		return bananasPosition;
+	public int getBananasBunch() {
+		bananasLock.lock();
+		int position = bananasBunch;
+		bananasLock.unlock();
+		return position;
+
 	}
 
 	/**
-	 * @param bananasPosition the bananasPosition to set
+	 * @param position
+	 *            the bananasBunch to set
 	 */
-	public void setBananasPosition(int bananasPosition) {
-		this.bananasPosition = bananasPosition;
+	public void setBananasBunch(int position) {
+		bananasLock.lock();
+		if (!isGrabbed()) {
+			checkPosition(position);
+			bananasBunch = position;
+		}
+		bananasLock.unlock();
 	}
 
 	/**
-	 * @return the boxPosition
-	 */
-	public int getBoxPosition() {
-		return boxPosition;
-	}
-
-	/**
-	 * @param boxPosition the boxPosition to set
-	 */
-	public void setBoxPosition(int boxPosition) {
-		this.boxPosition = boxPosition;
-	}
-
-	/**
-	 * @return the homePosition
-	 */
-	public int getHomePosition() {
-		return homePosition;
-	}
-
-	/**
-	 * @param homePosition the homePosition to set
-	 */
-	public void setHomePosition(int homePosition) {
-		this.homePosition = homePosition;
-	}
-
-	/**
-	 * @return the monkeyPosition
-	 */
-	public int getMonkeyPosition() {
-		return monkeyPosition;
-	}
-
-	/**
-	 * @param monkeyPosition the monkeyPosition to set
-	 */
-	public void setMonkeyPosition(int monkeyPosition) {
-		this.monkeyPosition = monkeyPosition;
-	}
-
-	/**
-	 * Gets the counter of the steps.
+	 * Tells if the monkey grabbed the bunch of bananas.
 	 * 
-	 * @return the stepCount
+	 * @return true if the bunch of bananas has been grabbed
 	 */
-	public int getStepCount() {
-		return stepCount;
+	public boolean isGrabbed() {
+		bananasLock.lock();
+		boolean flag = grabbed;
+		bananasLock.unlock();
+		return flag;
+	}
+
+	public void grabBananasBunch() {
+		bananasLock.lock();
+		grabbed = true;
+		bananasLock.unlock();
 	}
 
 	/**
-	 * Increments the counter of the steps.
+	 * @return the box
 	 */
-	public void incrementStepCount() {
-		stepCount++;
+	public int getBox() {
+		return box;
 	}
-	
+
+	/**
+	 * @param position
+	 *            the box to set
+	 */
+	public void setBox(int position) {
+		checkPosition(position);
+		box = position;
+	}
+
+	/**
+	 * @return the home
+	 */
+	public int getHome() {
+		return home;
+	}
+
+	/**
+	 * @param position
+	 *            the home to set
+	 */
+	public void setHome(int position) {
+		checkPosition(position);
+		home = position + length + 1;
+		monkey = home;
+	}
+
+	/**
+	 * @return the monkey
+	 */
+	public int getMonkey() {
+		return monkey;
+	}
+
+	/**
+	 * @param position
+	 *            the monkey to set
+	 */
+	public void setMonkey(int position) {
+		checkPosition(position);
+		monkey = position;
+	}
+
+	/**
+	 * Gets the environment length.
+	 * 
+	 * @return the length
+	 */
+	public int getLength() {
+		return length;
+	}
+
 }

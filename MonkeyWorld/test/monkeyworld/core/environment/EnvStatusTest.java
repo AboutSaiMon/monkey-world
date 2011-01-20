@@ -15,23 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.core.agent;
+package monkeyworld.core.environment;
+
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
+import org.junit.Test;
 
 /**
  *
  * @author Deep Blue Team
  */
-public enum ActionType {
-
-	GO_OUT,
-	GO_HOME,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	PUSH_LEFT,
-	PUSH_RIGHT,
-	PULL_LEFT,
-	PULL_RIGHT,
-	GRAB,
-	NO_OP
+public class EnvStatusTest {
+	
+	@Test
+	public void bananasBunchTest() {
+		EnvStatus status = new EnvStatus();
+		// check the consistency of the getter and setter
+		status.setBananasBunch(5);
+		assertThat(status.getBananasBunch(), is(equalTo(5)));
+		// check if the boolean flag works
+		status.grabBananasBunch();
+		assertThat(status.isGrabbed(), is(equalTo(true)));
+		// if the banana is grabbed, the setter method doesn't work
+		status.setBananasBunch(1);
+		assertThat(status.getBananasBunch(), is(equalTo(5)));
+	}
 	
 }

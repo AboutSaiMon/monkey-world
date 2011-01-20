@@ -15,23 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.core.agent;
+package monkeyworld.core.environment;
+
+import org.junit.Test;
 
 /**
  *
  * @author Deep Blue Team
  */
-public enum ActionType {
+public class EnvStatusModifierTest {
 
-	GO_OUT,
-	GO_HOME,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	PUSH_LEFT,
-	PUSH_RIGHT,
-	PULL_LEFT,
-	PULL_RIGHT,
-	GRAB,
-	NO_OP
+	@Test
+	public void test() {
+		
+	}
 	
 }

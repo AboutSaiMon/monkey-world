@@ -26,19 +26,23 @@ import org.oreilly.is.Action;
  */
 public class MonkeyAction implements Action {
 
-	private boolean noOp;
+	private boolean goOut;
+	private boolean goHome;
 	private boolean moveLeft;
 	private boolean moveRight;
-	private boolean push;
-	private boolean pull;
-	private boolean climb;
+	private boolean pushLeft;
+	private boolean pushRight;
+	private boolean pullLeft;
+	private boolean pullRight;
 	private boolean grab;
+	private boolean noOp;
 	private ActionType actionType;
 
 	/**
 	 * Creates an action.
 	 * 
-	 * @param type the action type
+	 * @param type
+	 *            the action type
 	 */
 	public MonkeyAction(ActionType type) {
 		actionType = type;
@@ -50,39 +54,62 @@ public class MonkeyAction implements Action {
 	 * Sets all boolean variables to "false".
 	 */
 	private void reset() {
-		noOp = false;
+		goOut = false;
+		goHome = false;
 		moveLeft = false;
 		moveRight = false;
-		push = false;
-		pull = false;
-		climb = false;
+		pushLeft = false;
+		pushRight = false;
+		pullLeft = false;
+		pullRight = false;
 		grab = false;
+		noOp = false;
 	}
 
 	/*
 	 * Sets the specified action to true
 	 */
 	private void setAction(ActionType type) {
-		if (type.equals(ActionType.NO_OP)) {
-			noOp = true;
+		if (type.equals(ActionType.GO_OUT)) {
+			goOut = true;
+		} else if (type.equals(ActionType.GO_HOME)) {
+			goHome = true;
 		} else if (type.equals(ActionType.MOVE_LEFT)) {
 			moveLeft = true;
 		} else if (type.equals(ActionType.MOVE_RIGHT)) {
 			moveRight = true;
-		} else if (type.equals(ActionType.PUSH)) {
-			push = true;
-		} else if (type.equals(ActionType.PULL)) {
-			pull = true;
-		} else if (type.equals(ActionType.CLIMB)) {
-			climb = true;
+		} else if (type.equals(ActionType.PUSH_LEFT)) {
+			pushLeft = true;
+		} else if (type.equals(ActionType.PUSH_RIGHT)) {
+			pushRight = true;
+		} else if( type.equals(ActionType.PULL_LEFT)) {
+			pullLeft = true;
+		} else if( type.equals(ActionType.PULL_RIGHT)) {
+			pullRight = true;
 		} else if (type.equals(ActionType.GRAB)) {
 			grab = true;
+		} else if (type.equals(ActionType.NO_OP)) {
+			noOp = true;
 		}
 	}
-	
+
 	@Override
 	public boolean isNoOp() {
 		return noOp;
+	}
+
+	/**
+	 * @return the goOut
+	 */
+	public boolean isGoOut() {
+		return goOut;
+	}
+
+	/**
+	 * @return the goHome
+	 */
+	public boolean isGoHome() {
+		return goHome;
 	}
 
 	/**
@@ -100,24 +127,31 @@ public class MonkeyAction implements Action {
 	}
 
 	/**
-	 * @return the push
+	 * @return the pushLeft
 	 */
-	public boolean isPush() {
-		return push;
+	public boolean isPushLeft() {
+		return pushLeft;
 	}
 
 	/**
-	 * @return the pull
+	 * @return the pushRight
 	 */
-	public boolean isPull() {
-		return pull;
+	public boolean isPushRight() {
+		return pushRight;
 	}
 
 	/**
-	 * @return the climb
+	 * @return the pullLeft
 	 */
-	public boolean isClimb() {
-		return climb;
+	public boolean isPullLeft() {
+		return pullLeft;
+	}
+
+	/**
+	 * @return the pullRight
+	 */
+	public boolean isPullRight() {
+		return pullRight;
 	}
 
 	/**
@@ -126,5 +160,5 @@ public class MonkeyAction implements Action {
 	public boolean isGrab() {
 		return grab;
 	}
-
+	
 }
