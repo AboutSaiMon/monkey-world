@@ -51,9 +51,9 @@ public class BottomPanel extends JPanel {
 	private boolean edit;
 	private int choice;
 
-	public BottomPanel(int c) {
+	public BottomPanel(int c, Laboratory l ) {
 		this.choice = c;
-		lab = new Laboratory(new Monkey());
+		lab = l;
 		setEditable(true);
 
 		this.setBackground(Color.WHITE);

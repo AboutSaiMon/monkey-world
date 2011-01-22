@@ -29,22 +29,28 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
+import monkeyworld.core.LaboratoryThread;
+import monkeyworld.core.agent.Monkey;
+import monkeyworld.core.environment.Laboratory;
+
 /**
  *
  * @author Deep Blue Team
  */
-public class FinalPanel extends JPanel {
+public class FinalPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
 	private JFrame frame;
 	private int choice;
 	private BottomPanel bottomPanel;
+	private Laboratory lab;
 
 	public FinalPanel(JFrame f, int choice) {
 		this.frame = f;
 		this.choice = choice;
 		frame.setSize(800, 800);
+		lab = new Laboratory(new Monkey());
 		createPanel();
 	}
 
@@ -69,11 +75,13 @@ public class FinalPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				bottomPanel.setEditable(false);
 				start.setEnabled(false);
+				LaboratoryThread t = new LaboratoryThread(lab);
+				t.start();
 			}
 		});
 		topPanel.add(start);
 
-		bottomPanel = new BottomPanel(choice);
+		bottomPanel = new BottomPanel(choice, lab);
 		bottomPanel.repaint();
 
 		JSplitPane panel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
