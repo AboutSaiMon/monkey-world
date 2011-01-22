@@ -15,13 +15,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld;
+package monkeyworld.core.environment;
 
-import monkeyworld.gui.PrincipalFrame;
+import java.util.Random;
 
-public class Main {
+/**
+ * 
+ * @author Deep Blue Team
+ */
+public class ThreadBanana extends Thread {
+
+	private Laboratory lab;
+	private int time;
+	private Random random;
+
+	/**
+	 * 
+	 */
+	public ThreadBanana(Laboratory laboratory, int time) {
+		lab = laboratory;
+		this.time = time;
+		random = new Random(time);
+	}
+
+	@Override
+	public void run() {
+		while (!lab.isGrabbed()) {
+			try {
+				sleep(time);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			lab.setBananasBunch(getPosition());
+		}
+	}
 	
-	public static void main(String[] args) {
-		new PrincipalFrame();
-	}	
+	private int getPosition() {
+		return random.nextInt(lab.getLength());
+	}
+
 }

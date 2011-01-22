@@ -24,7 +24,7 @@ package monkeyworld.core.environment;
 public enum EnvType {
 
 	STATIC,
-	DINAMIC,
+	DYNAMIC,
 	USER_DEFINED
 	
 }

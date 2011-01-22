@@ -21,7 +21,6 @@ import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.agent.MonkeyAction;
 import monkeyworld.core.agent.MonkeyPerception;
 
-import org.omg.CORBA.NVList;
 import org.oreilly.is.Environment;
 
 /**
@@ -34,23 +33,33 @@ public class Laboratory implements Environment {
 	private EnvType envType;
 	private EnvStatus envStatus;
 	private EnvStatusModifier envModifier;
+	private boolean userDefined = false;
 
 	public Laboratory(Monkey monkey) {
-		this(monkey, EnvType.STATIC);
+		this(monkey, EnvType.STATIC, 0);
 	}
 
-	public Laboratory(Monkey monkey, EnvType envType) {
+	public Laboratory(Monkey monkey, EnvType envType, int time) {
 		this.monkey = monkey;
 		this.envType = envType;
 		envModifier = new EnvStatusModifier();
 		envStatus = envModifier.getStatus();
+		// if the world is dynamic, creates a thread
+		// that changes the bananas bunch position
+		if (envType.equals(EnvType.DYNAMIC)) {
+			Thread t = new ThreadBanana(this, time);
+			t.start();
+		} else if (envType.equals(EnvType.USER_DEFINED)) {
+			userDefined = true;
+		}
 	}
 	
-	public Laboratory(Monkey monkey, EnvType envType, int length) {
-		this.monkey = monkey;
-		this.envType = envType;
-		envModifier = new EnvStatusModifier(length);
-		envStatus = envModifier.getStatus();
+	public boolean isUserDefined() {
+		return userDefined;
+	}
+
+	public int getLength() {
+		return envStatus.getLength();
 	}
 
 	public void setBananasBunch(int position) {
@@ -59,6 +68,10 @@ public class Laboratory implements Environment {
 
 	public int getBananasBunch() {
 		return envStatus.getBananasBunch();
+	}
+
+	public boolean isGrabbed() {
+		return envStatus.isGrabbed();
 	}
 
 	public void setBox(int position) {

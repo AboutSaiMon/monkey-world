@@ -17,6 +17,8 @@
  */
 package monkeyworld.core.agent;
 
+import java.util.LinkedList;
+
 import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
@@ -27,17 +29,30 @@ import org.oreilly.is.Percept;
 public class Monkey implements Agent {
 
 	private boolean alive;
+	private LinkedList<MonkeyAction> actions;
 	
 	/**
 	 * 
 	 */
 	public Monkey() {
 		alive = true;
+		actions = new LinkedList<MonkeyAction>();
+		actions.add(new MonkeyAction(ActionType.GO_OUT));
+		actions.add(new MonkeyAction(ActionType.MOVE_RIGHT));
+		actions.add(new MonkeyAction(ActionType.MOVE_RIGHT));
+		actions.add(new MonkeyAction(ActionType.GRAB));
+		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
+		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
+		actions.add(new MonkeyAction(ActionType.GO_HOME));
 	}
 	
 	@Override
 	public MonkeyAction execute(Percept percept) {
-		return null;
+		MonkeyAction action = actions.remove();
+		if( actions.isEmpty() ) {
+			setAlive(false);
+		}
+		return action;
 	}
 
 	@Override

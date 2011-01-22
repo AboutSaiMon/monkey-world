@@ -28,7 +28,8 @@ import java.io.File;
 
 import javax.swing.JPanel;
 
-import monkeyworld.core.Support;
+import monkeyworld.core.agent.Monkey;
+import monkeyworld.core.environment.Laboratory;
 
 
 /**
@@ -42,7 +43,7 @@ public class BottomPanel extends JPanel {
 	private Image monkey;
 	private Image box;
 	private Image bananas;
-	private Support s;
+	private Laboratory lab;
 
 	private int size = 60;
 	private int topPosition = 200;
@@ -52,7 +53,7 @@ public class BottomPanel extends JPanel {
 
 	public BottomPanel(int c) {
 		this.choice = c;
-		this.s = new Support();
+		lab = new Laboratory(new Monkey());
 		setEditable(true);
 
 		this.setBackground(Color.WHITE);
@@ -99,10 +100,10 @@ public class BottomPanel extends JPanel {
 				if (i >= 0 && i < 10) {
 					if (y > 200 && y < 260) {
 						if (isEditable() || choice == 2)
-							s.setBananasPosition(i);
+							lab.setBananasBunch(i);
 					} else if (y > 350 && y < 410) {
 						if (isEditable())
-							s.setBoxPosition(i);
+							lab.setBox(i);
 					}
 					repaint();
 				}
@@ -113,20 +114,20 @@ public class BottomPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		graphics.drawImage(bananas, s.getBananasPosition() * size + 105, topPosition + 5, null);
+		graphics.drawImage(bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null);
 		// arg0.drawImage( box, 0, 100, null );
 		for (int i = 0; i < 10; i++) {
 			graphics.drawRect(i * size + 100, topPosition, size, size);
-			if (i == s.getBoxPosition()) {
+			if (i == lab.getBox()) {
 				graphics.fillRect(i * size + 100, bottomPosition, size, size);
 			} else {
 				graphics.drawRect(i * size + 100, bottomPosition, size, size);
 			}
 		}
-		if (s.getMonkeyPosition() == s.getBoxPosition()) {
-			graphics.drawImage(monkey, s.getMonkeyPosition() * size + 100, (bottomPosition + topPosition) / 2, null);
+		if (lab.getMonkey() == lab.getBox()) {
+			graphics.drawImage(monkey, lab.getMonkey() * size + 100, (bottomPosition + topPosition) / 2, null);
 		} else {
-			graphics.drawImage(monkey, s.getMonkeyPosition() * size + 102, bottomPosition + 10, null);
+			graphics.drawImage(monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null);
 		}
 	}
 
