@@ -18,6 +18,7 @@
 package monkeyworld.core;
 
 import monkeyworld.core.environment.Laboratory;
+import monkeyworld.gui.BottomPanel;
 
 /**
  *
@@ -26,13 +27,24 @@ import monkeyworld.core.environment.Laboratory;
 public class LaboratoryThread extends Thread {
 	
 	Laboratory lab;
+	BottomPanel bottomPanel;
 	
-	public LaboratoryThread( Laboratory lab) {
+	public LaboratoryThread( Laboratory lab, BottomPanel bottomPanel) {
 		this.lab = lab;
+		this.bottomPanel = bottomPanel;
 	}
 	
 	@Override
 	public void run() {
-		lab.stepUntilDone();
+		while( !lab.isDone() )
+		{
+			lab.step();
+			bottomPanel.repaint();
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

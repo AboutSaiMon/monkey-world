@@ -68,6 +68,10 @@ public class FinalPanel extends JPanel{
 			topPanel.add(chooseTimeLabel);
 			topPanel.add(chooseTime);
 		}
+		
+		bottomPanel = new BottomPanel(choice, lab);
+		bottomPanel.repaint();
+		
 		final JButton start = new JButton("Start");
 		start.addActionListener(new ActionListener() {
 
@@ -75,14 +79,11 @@ public class FinalPanel extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				bottomPanel.setEditable(false);
 				start.setEnabled(false);
-				LaboratoryThread t = new LaboratoryThread(lab);
+				LaboratoryThread t = new LaboratoryThread(lab, bottomPanel);
 				t.start();
 			}
 		});
 		topPanel.add(start);
-
-		bottomPanel = new BottomPanel(choice, lab);
-		bottomPanel.repaint();
 
 		JSplitPane panel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
 		panel.setPreferredSize(new Dimension(800, 800));
