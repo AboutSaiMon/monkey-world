@@ -24,6 +24,7 @@ import monkeyworld.core.agent.MonkeyPerception;
 import org.oreilly.is.Environment;
 
 /**
+ * This class is the environment.
  * 
  * @author Deep Blue Team
  */
@@ -33,63 +34,162 @@ public class Laboratory implements Environment {
 	private EnvType envType;
 	private EnvStatus envStatus;
 	private EnvStatusModifier envModifier;
-	private boolean userDefined = false;
+	private boolean staticEnv = false;
+	private boolean dynamicEnv = false;
+	private boolean userDefinedEnv = false;
+	private ThreadBanana threadBanana;
 
+	/**
+	 * Creates a new environment, which is passed a reference to the agent.
+	 * 
+	 * @param monkey
+	 *            the agent
+	 */
 	public Laboratory(Monkey monkey) {
-		this(monkey, EnvType.STATIC, 0);
+		this(monkey, EnvType.STATIC);
 	}
 
-	public Laboratory(Monkey monkey, EnvType envType, int time) {
+	/**
+	 * Creates a new environment, which is passed a reference to the agent and
+	 * the environment type.
+	 * 
+	 * @param monkey
+	 *            the agent.
+	 * @param envType
+	 *            the environment type. It can be:
+	 *            <ul>
+	 *            <li>EnvType.STATIC</li>
+	 *            <li>EnvType.DYNAMIC</li>
+	 *            <li>EnvType.USER_DEFINED</li>
+	 *            <ul>
+	 */
+	public Laboratory(Monkey monkey, EnvType envType) {
 		this.monkey = monkey;
 		this.envType = envType;
 		envModifier = new EnvStatusModifier();
 		envStatus = envModifier.getStatus();
-		// if the world is dynamic, creates a thread
-		// that changes the bananas bunch position
-		if (envType.equals(EnvType.DYNAMIC)) {
-			Thread t = new ThreadBanana(this, time);
-			t.start();
-		} else if (envType.equals(EnvType.USER_DEFINED)) {
-			userDefined = true;
+		if (this.envType.equals(EnvType.STATIC)) {
+			staticEnv = true;
+		} else if (this.envType.equals(EnvType.DYNAMIC)) {
+			threadBanana = new ThreadBanana(this);
+			dynamicEnv = true;
+		} else if (this.envType.equals(EnvType.USER_DEFINED)) {
+			userDefinedEnv = true;
 		}
 	}
-	
-	public boolean isUserDefined() {
-		return userDefined;
+
+	/**
+	 * Set the time interval during which the bunch of bananas will remain
+	 * motionless. After this time, it will set a new location.
+	 * 
+	 * @param time
+	 *            the interval time.
+	 */
+	public void setIntervalTime(int time) {
+		threadBanana.setIntervalTime(time);
 	}
 
+	/**
+	 * Tells if the environment type is dynamic and the bananas bunch position
+	 * is changed by the user.
+	 * 
+	 * @return true if the environment type is user defined
+	 */
+	public boolean isUserDefined() {
+		return userDefinedEnv;
+	}
+
+	/**
+	 * Tells whether the environment type is static or not.
+	 * 
+	 * @return true if the environment is static
+	 */
+	public boolean isStatic() {
+		return staticEnv;
+	}
+
+	/**
+	 * Tells whether the environment type is dynamic or not.
+	 * 
+	 * @return true if the environment is dynamic
+	 */
+	public boolean isDynamic() {
+		return dynamicEnv;
+	}
+
+	/**
+	 * Gets the environment length.
+	 * 
+	 * @return the length
+	 */
 	public int getLength() {
 		return envStatus.getLength();
 	}
 
+	/**
+	 * Sets the bananas bunch position.
+	 * 
+	 * @param position
+	 *            the position of the bananas bunch
+	 */
 	public void setBananasBunch(int position) {
 		envStatus.setBananasBunch(position);
 	}
 
+	/**
+	 * Gets the position of the bananas bunch.
+	 * 
+	 * @return the bananas bunch position
+	 */
 	public int getBananasBunch() {
 		return envStatus.getBananasBunch();
 	}
 
+	/**
+	 * Tells whether the bananas bunch is grabbed or not.
+	 * 
+	 * @return true if the bananas bunch was grabbed
+	 */
 	public boolean isGrabbed() {
 		return envStatus.isGrabbed();
 	}
 
+	/**
+	 * Sets the position of the box.
+	 * @param position the box position
+	 */
 	public void setBox(int position) {
 		envStatus.setBox(position);
 	}
 
+	/**
+	 * Gets the position of the box.
+	 * @return the box position
+	 */
 	public int getBox() {
 		return envStatus.getBox();
 	}
 
+	/**
+	 * Sets the position of the home.
+	 * @param position the home position
+	 */
 	public void setHome(int position) {
 		envStatus.setHome(position);
 	}
 
+	/**
+	 * Gets the position of the home.
+	 * @return the home position
+	 */
 	public int getHome() {
 		return envStatus.getHome();
 	}
 
+	/**
+	 * Gets the position of the monkey.
+	 * @return the monkey position
+	 */
 	public int getMonkey() {
 		return envStatus.getMonkey();
 	}
@@ -101,8 +201,8 @@ public class Laboratory implements Environment {
 
 	@Override
 	public void step() {
-		if (isDone()) {
-			return;
+		if (envStatus.isFirstStep() && isUserDefined()) {
+			threadBanana.start();
 		}
 		MonkeyPerception perception = genPerception();
 		MonkeyAction action = monkey.execute(perception);

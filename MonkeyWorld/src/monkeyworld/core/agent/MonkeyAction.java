@@ -20,7 +20,7 @@ package monkeyworld.core.agent;
 import org.oreilly.is.Action;
 
 /**
- * Defines a specific action the monkey has to perform.
+ * Defines a specific action that the monkey can perform.
  * 
  * @author Deep Blue Team
  */
@@ -99,63 +99,63 @@ public class MonkeyAction implements Action {
 	}
 
 	/**
-	 * @return the goOut
+	 * @return true if this is a <b>GO_OUT</b> Action.
 	 */
 	public boolean isGoOut() {
 		return goOut;
 	}
 
 	/**
-	 * @return the goHome
+	 * @return true if this is a <b>GO_HOME</b> Action.
 	 */
 	public boolean isGoHome() {
 		return goHome;
 	}
 
 	/**
-	 * @return the moveLeft
+	 * @return true if this is a <b>MOVE_LEFT</b> Action.
 	 */
 	public boolean isMoveLeft() {
 		return moveLeft;
 	}
 
 	/**
-	 * @return the moveRight
+	 * @return true if this is a <b>MOVE_RIGHT</b> Action.
 	 */
 	public boolean isMoveRight() {
 		return moveRight;
 	}
 
 	/**
-	 * @return the pushLeft
+	 * @return true if this is a <b>PUSH_LEFT</b> Action.
 	 */
 	public boolean isPushLeft() {
 		return pushLeft;
 	}
 
 	/**
-	 * @return the pushRight
+	 * @return true if this is a <b>PUSH_RIGHT</b> Action.
 	 */
 	public boolean isPushRight() {
 		return pushRight;
 	}
 
 	/**
-	 * @return the pullLeft
+	 * @return true if this is a <b>PULL_LEFT</b> Action.
 	 */
 	public boolean isPullLeft() {
 		return pullLeft;
 	}
 
 	/**
-	 * @return the pullRight
+	 * @return true if this is a <b>PULL_RIGHT</b> Action.
 	 */
 	public boolean isPullRight() {
 		return pullRight;
 	}
 
 	/**
-	 * @return the grab
+	 * @return true if this is a <b>GRAB</b> Action.
 	 */
 	public boolean isGrab() {
 		return grab;

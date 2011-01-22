@@ -20,36 +20,49 @@ package monkeyworld.core.environment;
 import java.util.Random;
 
 /**
+ * This is the thread that change the position of the bananas bunch every
+ * <code>time</code> secs.
  * 
  * @author Deep Blue Team
  */
 public class ThreadBanana extends Thread {
 
 	private Laboratory lab;
-	private int time;
+	private int intervalTime;
 	private Random random;
 
 	/**
-	 * 
+	 * Creates a new thread, accepting a reference to the environment, as input
+	 * parameter.
 	 */
-	public ThreadBanana(Laboratory laboratory, int time) {
+	public ThreadBanana(Laboratory laboratory) {
 		lab = laboratory;
-		this.time = time;
-		random = new Random(time);
+		random = new Random(intervalTime);
+	}
+
+	/**
+	 * Sets the interval time. Every <code>time</code> times, this thread has to
+	 * change the bananas bunch position.
+	 * 
+	 * @param time
+	 *            the interval time
+	 */
+	public void setIntervalTime(int time) {
+		this.intervalTime = time;
 	}
 
 	@Override
 	public void run() {
 		while (!lab.isGrabbed()) {
 			try {
-				sleep(time);
+				sleep(intervalTime);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			lab.setBananasBunch(getPosition());
 		}
 	}
-	
+
 	private int getPosition() {
 		return random.nextInt(lab.getLength());
 	}

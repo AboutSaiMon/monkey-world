@@ -18,13 +18,12 @@
 package monkeyworld.core.environment;
 
 /**
- *
+ * Is just an enumeration of the environment types.
+ * 
  * @author Deep Blue Team
  */
 public enum EnvType {
 
-	STATIC,
-	DYNAMIC,
-	USER_DEFINED
-	
+	STATIC, DYNAMIC, USER_DEFINED
+
 }

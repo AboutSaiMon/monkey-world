@@ -20,7 +20,8 @@ package monkeyworld.core.agent;
 import org.oreilly.is.Percept;
 
 /**
- *
+ * This is the perception that the monkey receives from the environment.
+ * 
  * @author Deep Blue Team
  */
 public class MonkeyPerception implements Percept {
@@ -29,9 +30,9 @@ public class MonkeyPerception implements Percept {
 	private int box;
 	private int home;
 	private int monkey;
-	
+
 	/**
-	 * 
+	 * Creates a new perception.
 	 */
 	public MonkeyPerception() {
 		bananasBunch = 0;
@@ -41,59 +42,79 @@ public class MonkeyPerception implements Percept {
 	}
 
 	/**
-	 * @return the bananasBunch
+	 * Gets the position of the bananas bunch.
+	 * 
+	 * @return the bananas bunch position
 	 */
 	public int getBananasBunch() {
 		return bananasBunch;
 	}
 
 	/**
-	 * @param position the bananasBunch to set
+	 * Sets the position of the bananas bunch.
+	 * 
+	 * @param position
+	 *            the bananas bunch position to set
 	 */
 	public void setBananasBunch(int position) {
 		bananasBunch = position;
 	}
 
 	/**
-	 * @return the box
+	 * Gets the position of the box.
+	 * 
+	 * @return the box position
 	 */
 	public int getBox() {
 		return box;
 	}
 
 	/**
-	 * @param position the box to set
+	 * Sets the position of the box.
+	 * 
+	 * @param position
+	 *            the box position to set
 	 */
 	public void setBox(int position) {
 		box = position;
 	}
 
 	/**
-	 * @return the home
+	 * Gets the position of the home.
+	 * 
+	 * @return the home position.
 	 */
 	public int getHome() {
 		return home;
 	}
 
 	/**
-	 * @param position the home to set
+	 * Sets the position of the home.
+	 * 
+	 * @param position
+	 *            the home position to set
 	 */
 	public void setHome(int position) {
 		home = position;
 	}
 
 	/**
-	 * @return the monkey
+	 * Gets the position of the monkey.
+	 * 
+	 * @return the monkey position
 	 */
 	public int getMonkey() {
 		return monkey;
 	}
 
 	/**
-	 * @param position the monkey to set
+	 * Sets the position of the monkey.
+	 * 
+	 * @param position
+	 *            the monkey position to set
 	 */
 	public void setMonkey(int position) {
 		monkey = position;
 	}
-	
+
 }

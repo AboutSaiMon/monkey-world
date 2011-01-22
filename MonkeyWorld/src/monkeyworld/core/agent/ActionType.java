@@ -18,20 +18,12 @@
 package monkeyworld.core.agent;
 
 /**
- *
+ * Is just an enumeration of the possible actions the monkey can perform.
+ * 
  * @author Deep Blue Team
  */
 public enum ActionType {
 
-	GO_OUT,
-	GO_HOME,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	PUSH_LEFT,
-	PUSH_RIGHT,
-	PULL_LEFT,
-	PULL_RIGHT,
-	GRAB,
-	NO_OP
-	
+	GO_OUT, GO_HOME, MOVE_LEFT, MOVE_RIGHT, PUSH_LEFT, PUSH_RIGHT, PULL_LEFT, PULL_RIGHT, GRAB, NO_OP
+
 }

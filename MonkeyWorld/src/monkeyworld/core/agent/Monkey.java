@@ -23,19 +23,22 @@ import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
 /**
- *
+ * Is the agent of this project.
+ * 
  * @author Deep Blue Team
  */
 public class Monkey implements Agent {
 
 	private boolean alive;
+	// TODO: this field is for debug.
 	private LinkedList<MonkeyAction> actions;
-	
+
 	/**
-	 * 
+	 * Create a new monkey.
 	 */
 	public Monkey() {
 		alive = true;
+		// TODO: debug code //
 		actions = new LinkedList<MonkeyAction>();
 		actions.add(new MonkeyAction(ActionType.GO_OUT));
 		actions.add(new MonkeyAction(ActionType.MOVE_RIGHT));
@@ -44,12 +47,13 @@ public class Monkey implements Agent {
 		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
 		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
 		actions.add(new MonkeyAction(ActionType.GO_HOME));
+		// TODO: end debug code //
 	}
-	
+
 	@Override
 	public MonkeyAction execute(Percept percept) {
 		MonkeyAction action = actions.remove();
-		if( actions.isEmpty() ) {
+		if (actions.isEmpty()) {
 			setAlive(false);
 		}
 		return action;

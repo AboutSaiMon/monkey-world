@@ -21,6 +21,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * This class represents the internal state of the environment.
  * 
  * @author Deep Blue Team
  */
@@ -33,11 +34,21 @@ public class EnvStatus {
 	private int monkey;
 	private int length;
 	private boolean grabbed;
+	private int counter;
 
+	/**
+	 * Create a new status with 10 locations.
+	 */
 	public EnvStatus() {
 		this(10);
 	}
 
+	/**
+	 * Creates a new environment with <code>length</code> locations.
+	 * 
+	 * @param length
+	 *            the number of locations of this environment.
+	 */
 	public EnvStatus(int length) {
 		checkLength(length);
 		this.length = length;
@@ -47,6 +58,19 @@ public class EnvStatus {
 		box = 0;
 		grabbed = false;
 		bananasLock = new ReentrantLock(true);
+		counter = 0;
+	}
+	
+	public boolean isFirstStep() {
+		return counter == 0;
+	}
+	
+	public void incrementCounter() {
+		counter++;
+	}
+	
+	public int getCounter() {
+		return counter;
 	}
 
 	private void checkLength(int length) {
@@ -67,7 +91,9 @@ public class EnvStatus {
 	}
 
 	/**
-	 * @return the bananasBunch
+	 * Gets the position of the bananas bunch.
+	 * 
+	 * @return the bananas bunch position
 	 */
 	public int getBananasBunch() {
 		bananasLock.lock();
@@ -78,8 +104,10 @@ public class EnvStatus {
 	}
 
 	/**
+	 * Sets the position of the bananas bunch.
+	 * 
 	 * @param position
-	 *            the bananasBunch to set
+	 *            the bananas bunch position to set
 	 */
 	public void setBananasBunch(int position) {
 		bananasLock.lock();
@@ -91,7 +119,7 @@ public class EnvStatus {
 	}
 
 	/**
-	 * Tells if the monkey grabbed the bunch of bananas.
+	 * Tells if the monkey has grabbed the bunch of bananas.
 	 * 
 	 * @return true if the bunch of bananas has been grabbed
 	 */
@@ -102,6 +130,9 @@ public class EnvStatus {
 		return flag;
 	}
 
+	/**
+	 * Grabs the bunch of bananas.
+	 */
 	public void grabBananasBunch() {
 		bananasLock.lock();
 		grabbed = true;
@@ -109,15 +140,19 @@ public class EnvStatus {
 	}
 
 	/**
-	 * @return the box
+	 * Gets the position of the box.
+	 * 
+	 * @return the box position
 	 */
 	public int getBox() {
 		return box;
 	}
 
 	/**
+	 * Sets the position of the box.
+	 * 
 	 * @param position
-	 *            the box to set
+	 *            the box position to set
 	 */
 	public void setBox(int position) {
 		checkPosition(position);
@@ -125,15 +160,19 @@ public class EnvStatus {
 	}
 
 	/**
-	 * @return the home
+	 * Gets the position of the home.
+	 * 
+	 * @return the home position
 	 */
 	public int getHome() {
 		return home;
 	}
 
 	/**
+	 * Sets the position of the home.
+	 * 
 	 * @param position
-	 *            the home to set
+	 *            the home position to set
 	 */
 	public void setHome(int position) {
 		checkPosition(position);
@@ -142,15 +181,19 @@ public class EnvStatus {
 	}
 
 	/**
-	 * @return the monkey
+	 * Gets the position of the monkey.
+	 * 
+	 * @return the monkey position
 	 */
 	public int getMonkey() {
 		return monkey;
 	}
 
 	/**
+	 * Sets the position of the monkey.
+	 * 
 	 * @param position
-	 *            the monkey to set
+	 *            the monkey position to set
 	 */
 	public void setMonkey(int position) {
 		checkPosition(position);
