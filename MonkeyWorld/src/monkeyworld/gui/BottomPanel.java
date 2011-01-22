@@ -93,17 +93,27 @@ public class BottomPanel extends JPanel {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) 
+			{
 				int x = e.getX();
 				int y = e.getY();
 				int i = (x - 100) / 60;
-				if (i >= 0 && i < 10) {
-					if (y > 200 && y < 260) {
+				if( i >= 0 && i < 10 ) 
+				{
+					if( y > 200 && y < 260 ) 
+					{
 						if (isEditable() || choice == 2)
 							lab.setBananasBunch(i);
-					} else if (y > 350 && y < 410) {
+					} 
+					else if( y > 350 && y < 410 ) 
+					{
 						if (isEditable())
 							lab.setBox(i);
+					}
+					else if( y > 410 && y < 470 )
+					{
+						if( isEditable() )
+							lab.setHome(i);						
 					}
 					repaint();
 				}
@@ -127,6 +137,10 @@ public class BottomPanel extends JPanel {
 			{
 				graphics.drawRect( i * size + 100, bottomPosition, size, size );
 			}
+			if( i == (lab.getHome()-1)% 10 )
+			{
+				graphics.drawRect( i * size + 100, bottomPosition + 60, size, size );				
+			}
 		}
 		if ( lab.getMonkey() == lab.getBox() ) 
 		{
@@ -136,7 +150,7 @@ public class BottomPanel extends JPanel {
 		{
 			if( lab.getMonkey() >= 10 )
 			{				
-				graphics.drawImage(monkey, lab.getMonkey()%10 * size + 104, bottomPosition + 70, null);
+				graphics.drawImage(monkey, (lab.getMonkey()-1)%10 * size + 104, bottomPosition + 70, null);
 			}
 			else
 			{			
