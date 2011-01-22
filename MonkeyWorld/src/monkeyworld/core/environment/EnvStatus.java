@@ -89,6 +89,16 @@ public class EnvStatus {
 			throw new IllegalArgumentException(message.toString());
 		}
 	}
+	
+	private void checkMonkeyPosition(int position) {
+		if (position < 0 || position == length || position > 2 * length) {
+			StringBuilder message = new StringBuilder();
+			message.append("\"" + position + "\" is not a valid position.");
+			message.append(" Please, insert a number between 0 and " + length
+					+ ".");
+			throw new IllegalArgumentException(message.toString());
+		}
+	}
 
 	/**
 	 * Gets the position of the bananas bunch.
@@ -196,7 +206,7 @@ public class EnvStatus {
 	 *            the monkey position to set
 	 */
 	public void setMonkey(int position) {
-		checkPosition(position);
+		checkMonkeyPosition(position);
 		monkey = position;
 	}
 
