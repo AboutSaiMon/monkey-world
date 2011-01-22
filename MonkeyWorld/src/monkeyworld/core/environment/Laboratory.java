@@ -240,6 +240,7 @@ public class Laboratory implements Environment {
 	public void step(int n) {
 		for (int i = 0; i < n; i++) {
 			step();
+			sleep();
 		}
 	}
 
@@ -247,6 +248,15 @@ public class Laboratory implements Environment {
 	public void stepUntilDone() {
 		while (!isDone()) {
 			step();
+			sleep();
+		}
+	}
+	
+	private void sleep() {
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
