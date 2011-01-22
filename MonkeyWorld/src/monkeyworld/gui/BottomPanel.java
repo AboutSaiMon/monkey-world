@@ -112,22 +112,36 @@ public class BottomPanel extends JPanel {
 	}
 
 	@Override
-	public void paintComponent(Graphics graphics) {
-		super.paintComponent(graphics);
-		graphics.drawImage(bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null);
+	public void paintComponent( Graphics graphics ) {
+		super.paintComponent( graphics );
+		graphics.drawImage( bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null );
 		// arg0.drawImage( box, 0, 100, null );
-		for (int i = 0; i < 10; i++) {
-			graphics.drawRect(i * size + 100, topPosition, size, size);
-			if (i == lab.getBox()) {
-				graphics.fillRect(i * size + 100, bottomPosition, size, size);
-			} else {
-				graphics.drawRect(i * size + 100, bottomPosition, size, size);
+		for( int i = 0; i < 10; i++ ) 
+		{
+			graphics.drawRect( i * size + 100, topPosition, size, size );
+			if( i == lab.getBox() ) 
+			{
+				graphics.fillRect( i * size + 100, bottomPosition, size, size );
+			}
+			else 
+			{
+				graphics.drawRect( i * size + 100, bottomPosition, size, size );
 			}
 		}
-		if (lab.getMonkey() == lab.getBox()) {
-			graphics.drawImage(monkey, lab.getMonkey() * size + 100, (bottomPosition + topPosition) / 2, null);
-		} else {
-			graphics.drawImage(monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null);
+		if ( lab.getMonkey() == lab.getBox() ) 
+		{
+			graphics.drawImage( monkey, lab.getMonkey() * size + 100, ( bottomPosition + topPosition ) / 2, null );
+		} 
+		else 
+		{
+			if( lab.getMonkey() >= 10 )
+			{				
+				graphics.drawImage(monkey, lab.getMonkey()%10 * size + 104, bottomPosition + 70, null);
+			}
+			else
+			{			
+				graphics.drawImage(monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null);
+			}
 		}
 	}
 

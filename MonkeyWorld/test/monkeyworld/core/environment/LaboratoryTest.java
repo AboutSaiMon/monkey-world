@@ -47,13 +47,13 @@ public class LaboratoryTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void setBoxPosition() {
 		Laboratory lab = new Laboratory(monkey);
-		lab.setBox(-1);
+		lab.setBox(1);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void setHomePosition() {
 		Laboratory lab = new Laboratory(monkey);
-		lab.setHome(100);
+		lab.setHome(1);
 	}
 	
 	@Test

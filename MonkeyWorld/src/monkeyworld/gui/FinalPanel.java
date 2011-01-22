@@ -44,7 +44,7 @@ public class FinalPanel extends JPanel {
 	public FinalPanel(JFrame f, int choice) {
 		this.frame = f;
 		this.choice = choice;
-		f.setSize(800, 800);
+		frame.setSize(800, 800);
 		createPanel();
 	}
 
