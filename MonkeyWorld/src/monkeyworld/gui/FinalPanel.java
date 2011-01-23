@@ -29,7 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import monkeyworld.core.LaboratoryThread;
 import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.environment.Laboratory;
 

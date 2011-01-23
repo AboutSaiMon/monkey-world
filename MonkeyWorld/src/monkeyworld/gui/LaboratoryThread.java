@@ -15,29 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.core;
+package monkeyworld.gui;
 
 import monkeyworld.core.environment.Laboratory;
-import monkeyworld.gui.BottomPanel;
 
 /**
- *
+ * 
  * @author Deep Blue Team
  */
 public class LaboratoryThread extends Thread {
-	
-	Laboratory lab;
-	BottomPanel bottomPanel;
-	
-	public LaboratoryThread( Laboratory lab, BottomPanel bottomPanel) {
+
+	private Laboratory lab;
+	private BottomPanel bottomPanel;
+
+	public LaboratoryThread(Laboratory lab, BottomPanel bottomPanel) {
 		this.lab = lab;
 		this.bottomPanel = bottomPanel;
 	}
-	
+
 	@Override
 	public void run() {
-		while( !lab.isDone() )
-		{
+		while (!lab.isDone()) {
 			lab.step();
 			bottomPanel.repaint();
 			try {
