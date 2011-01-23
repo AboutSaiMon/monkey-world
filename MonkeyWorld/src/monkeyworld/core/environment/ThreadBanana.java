@@ -38,6 +38,7 @@ public class ThreadBanana extends Thread {
 	public ThreadBanana(Laboratory laboratory) {
 		lab = laboratory;
 		random = new Random(intervalTime);
+		intervalTime = 5000;
 	}
 
 	/**
