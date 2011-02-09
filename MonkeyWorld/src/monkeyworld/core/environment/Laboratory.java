@@ -233,6 +233,7 @@ public class Laboratory implements Environment {
 		perception.setBox(envStatus.getBox());
 		perception.setHome(envStatus.getHome());
 		perception.setMonkey(envStatus.getMonkey());
+		perception.setGrabbed(envStatus.isGrabbed());
 		return perception;
 	}
 

@@ -30,6 +30,7 @@ public class MonkeyPerception implements Percept {
 	private int box;
 	private int home;
 	private int monkey;
+	private boolean grabbed;
 
 	/**
 	 * Creates a new perception.
@@ -115,6 +116,24 @@ public class MonkeyPerception implements Percept {
 	 */
 	public void setMonkey(int position) {
 		monkey = position;
+	}
+
+	/**
+	 * @return true if the bananas bunch is grabbed by the monkey
+	 */
+	public boolean isGrabbed() {
+		return grabbed;
+	}
+
+	/**
+	 * Sets the <code>grabbed</code> status of the bananas bunch. If
+	 * <code>true</code>, the monkey grabbed the bananas bunch.
+	 * 
+	 * @param grabbed
+	 *            true or false
+	 */
+	public void setGrabbed(boolean grabbed) {
+		this.grabbed = grabbed;
 	}
 
 }
