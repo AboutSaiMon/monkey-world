@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import monkeyworld.core.agent.Monkey;
+import monkeyworld.agents.ThirdAgent;
 import monkeyworld.core.environment.Laboratory;
 
 /**
@@ -49,7 +49,7 @@ public class FinalPanel extends JPanel{
 		this.frame = f;
 		this.choice = choice;
 		frame.setSize(800, 800);
-		lab = new Laboratory(new Monkey());
+		lab = new Laboratory( new ThirdAgent() );
 		createPanel();
 	}
 

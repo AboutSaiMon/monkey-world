@@ -28,7 +28,6 @@ import java.io.File;
 
 import javax.swing.JPanel;
 
-import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.environment.Laboratory;
 
 

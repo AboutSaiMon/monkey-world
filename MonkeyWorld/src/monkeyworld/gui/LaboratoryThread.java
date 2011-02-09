@@ -28,19 +28,24 @@ public class LaboratoryThread extends Thread {
 	private Laboratory lab;
 	private BottomPanel bottomPanel;
 
-	public LaboratoryThread(Laboratory lab, BottomPanel bottomPanel) {
+	public LaboratoryThread( Laboratory lab, BottomPanel bottomPanel ) 
+	{
 		this.lab = lab;
 		this.bottomPanel = bottomPanel;
 	}
 
 	@Override
-	public void run() {
-		while (!lab.isDone()) {
+	public void run() 
+	{
+		while ( !lab.isDone() ) 
+		{
 			lab.step();
 			bottomPanel.repaint();
-			try {
-				sleep(1000);
-			} catch (InterruptedException e) {
+			try 
+			{
+				sleep( 1000 );
+			} catch ( InterruptedException e ) 
+			{
 				e.printStackTrace();
 			}
 		}
