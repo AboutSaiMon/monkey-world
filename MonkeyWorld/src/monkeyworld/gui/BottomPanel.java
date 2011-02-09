@@ -50,7 +50,8 @@ public class BottomPanel extends JPanel {
 	private boolean edit;
 	private int choice;
 
-	public BottomPanel(int c, Laboratory l ) {
+	public BottomPanel( int c, Laboratory l ) 
+	{
 		this.choice = c;
 		lab = l;
 		setEditable(true);
@@ -61,38 +62,44 @@ public class BottomPanel extends JPanel {
 		monkey = t.getImage("src" + File.separator + "resources" + File.separator + "scimmia.jpg");
 		box = t.getImage("src" + File.separator + "resources" + File.separator + "box.png");
 		bananas = t.getImage("src" + File.separator + "resources" + File.separator + "bananas.jpg");
-		MediaTracker mt = new MediaTracker(this);
-		mt.addImage(monkey, 0);
-		mt.addImage(box, 1);
-		mt.addImage(bananas, 2);
-		try {
-			mt.waitForID(0);
-			mt.waitForID(1);
-			mt.waitForID(2);
-		} catch (InterruptedException e) {
+		MediaTracker mt = new MediaTracker( this );
+		mt.addImage( monkey, 0 );
+		mt.addImage( box, 1 );
+		mt.addImage( bananas, 2 );
+		try 
+		{
+			mt.waitForID( 0 );
+			mt.waitForID( 1 );
+			mt.waitForID( 2 );
+		} catch ( InterruptedException e ) 
+		{
 			e.printStackTrace();
 		}
 
-		this.addMouseListener(new MouseListener() {
+		this.addMouseListener( new MouseListener() {
 
 			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void mouseReleased( MouseEvent e ) 
+			{
 			}
 
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed( MouseEvent e ) 
+			{
 			}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseExited( MouseEvent e ) 
+			{
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent e) {
+			public void mouseEntered( MouseEvent e )
+			{
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent e) 
+			public void mouseClicked( MouseEvent e ) 
 			{
 				int x = e.getX();
 				int y = e.getY();
@@ -101,18 +108,18 @@ public class BottomPanel extends JPanel {
 				{
 					if( y > 200 && y < 260 ) 
 					{
-						if (isEditable() || choice == 2)
-							lab.setBananasBunch(i);
+						if ( isEditable() || choice == 2 )
+							lab.setBananasBunch( i );
 					} 
 					else if( y > 350 && y < 410 ) 
 					{
-						if (isEditable())
-							lab.setBox(i);
+						if ( isEditable() && i != ( ( lab.getHome() - 1 )  % 10 ) )
+							lab.setBox( i );
 					}
 					else if( y > 410 && y < 470 )
 					{
-						if( isEditable() )
-							lab.setHome(i);						
+						if( isEditable() && i != lab.getBox() )
+							lab.setHome( i );						
 					}
 					repaint();
 				}
@@ -121,10 +128,12 @@ public class BottomPanel extends JPanel {
 	}
 
 	@Override
-	public void paintComponent( Graphics graphics ) {
+	public void paintComponent( Graphics graphics ) 
+	{
 		super.paintComponent( graphics );
-		graphics.drawImage( bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null );
-		// arg0.drawImage( box, 0, 100, null );
+		if( !lab.isGrabbed() )
+			graphics.drawImage( bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null );
+		
 		for( int i = 0; i < 10; i++ ) 
 		{
 			graphics.drawRect( i * size + 100, topPosition, size, size );
@@ -136,7 +145,7 @@ public class BottomPanel extends JPanel {
 			{
 				graphics.drawRect( i * size + 100, bottomPosition, size, size );
 			}
-			if( i == (lab.getHome()-1)% 10 )
+			if( i == ( lab.getHome() -1 )% 10 )
 			{
 				graphics.drawRect( i * size + 100, bottomPosition + 60, size, size );				
 			}
@@ -149,20 +158,22 @@ public class BottomPanel extends JPanel {
 		{
 			if( lab.getMonkey() >= 10 )
 			{				
-				graphics.drawImage(monkey, (lab.getMonkey()-1)%10 * size + 104, bottomPosition + 70, null);
+				graphics.drawImage( monkey, ( lab.getMonkey()-1 ) % 10 * size + 104, bottomPosition + 70, null );
 			}
 			else
 			{			
-				graphics.drawImage(monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null);
+				graphics.drawImage( monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null );
 			}
 		}
 	}
 
-	public void setEditable(boolean edit) {
+	public void setEditable( boolean edit ) 
+	{
 		this.edit = edit;
 	}
 
-	public boolean isEditable() {
+	public boolean isEditable() 
+	{
 		return edit;
 	}
 }

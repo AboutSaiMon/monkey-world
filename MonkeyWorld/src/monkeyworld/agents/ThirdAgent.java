@@ -87,7 +87,7 @@ public class ThirdAgent extends Monkey
 		}
 		else if( step == CURRENTSTEP.KEEP_BANANA )
 		{			
-			return keepBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch() );
+			return keepBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch(), monkeyPerception.isGrabbed() );
 		}
 		else if( step == CURRENTSTEP.BACK_BOX )
 		{
@@ -95,7 +95,12 @@ public class ThirdAgent extends Monkey
 		}		
 		else if( step == CURRENTSTEP.BACK_AT_HOME )
 		{
-						
+			return backAtHome( monkeyPerception.getMonkey() );
+		}
+		else if( step == CURRENTSTEP.FINISH )
+		{
+			a = new MonkeyAction( ActionType.GO_HOME );
+			this.setAlive( false );
 		}
 		return a;
 	}
@@ -166,19 +171,36 @@ public class ThirdAgent extends Monkey
 		return a;
 	}
 	
-	private MonkeyAction keepBanana( int boxPosition, int monkeyPosition, int bananaPosition )
+	private MonkeyAction keepBanana( int boxPosition, int monkeyPosition, int bananaPosition, boolean grabbed )
 	{
 		MonkeyAction a;
-		if( monkeyPosition == 0 )
-			a = new MonkeyAction( ActionType.MOVE_RIGHT );
+		
+		if( grabbed )
+		{			
+			step = CURRENTSTEP.BACK_BOX;
+		}
 		else
-			a = new MonkeyAction( ActionType.MOVE_LEFT );
+		{
+			step = CURRENTSTEP.FIND_BANANA;
+		}
 		
 		if( boxPosition == monkeyPosition && monkeyPosition == bananaPosition )
 		{
 			a = new MonkeyAction( ActionType.GRAB );
-			step = CURRENTSTEP.BACK_BOX;
-			return a;
+		}
+		else
+		{
+			if( boxPosition == monkeyPosition )
+			{
+				if( monkeyPosition > bananaPosition )
+					a = new MonkeyAction( ActionType.MOVE_RIGHT );
+				else
+					a = new MonkeyAction( ActionType.MOVE_LEFT );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.NO_OP );
+			}
 		}
 		
 		return a;
@@ -188,8 +210,6 @@ public class ThirdAgent extends Monkey
 	{
 		MonkeyAction a;
 		//TODO Insert a boolean tag to know if banana is grabbed or less.
-//		if( not grabbed )
-//			step = CURRENTSTEP.KEEPBANANA;
 		
 		if( boxPosition == initialBoxPosition )
 		{
@@ -198,8 +218,62 @@ public class ThirdAgent extends Monkey
 			return a;
 		}
 		
-		return null;
+		if( boxPosition == monkeyPosition )
+		{
+			if( monkeyPosition > initialBoxPosition )
+			{
+				a = new MonkeyAction( ActionType.MOVE_RIGHT );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.MOVE_LEFT );
+			}
+			return a;
+		}
+		
+		if( boxPosition > initialBoxPosition )
+		{
+			if( boxPosition > monkeyPosition )
+			{
+				a = new MonkeyAction( ActionType.PULL_LEFT );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.PUSH_LEFT );
+			}
+		}
+		else
+		{
+			if( boxPosition > monkeyPosition )
+			{
+				a = new MonkeyAction( ActionType.PUSH_RIGHT );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.PULL_RIGHT );
+			}
+		}
+		return a;		
 	}
 	
-	
+	private MonkeyAction backAtHome( int monkeyPosition )
+	{
+		MonkeyAction a;
+		if( monkeyPosition == homePosition )
+		{
+			step = CURRENTSTEP.FINISH;
+			a = new MonkeyAction( ActionType.NO_OP );			
+			return a;
+		}
+		
+		if( homePosition > monkeyPosition )
+		{
+			a = new MonkeyAction( ActionType.MOVE_RIGHT );
+		}
+		else
+		{
+			a = new MonkeyAction( ActionType.MOVE_LEFT );
+		}
+		return a;
+	}	
 }

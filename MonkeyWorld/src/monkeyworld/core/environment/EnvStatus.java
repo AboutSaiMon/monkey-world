@@ -55,7 +55,7 @@ public class EnvStatus {
 		home = length + 1;
 		monkey = home;
 		bananasBunch = 0;
-		box = 0;
+		box = 1;
 		grabbed = false;
 		bananasLock = new ReentrantLock(true);
 		counter = 0;

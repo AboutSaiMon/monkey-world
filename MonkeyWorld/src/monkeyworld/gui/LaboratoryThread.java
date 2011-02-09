@@ -43,7 +43,7 @@ public class LaboratoryThread extends Thread {
 			bottomPanel.repaint();
 			try 
 			{
-				sleep( 1000 );
+				sleep( 600 );
 			} catch ( InterruptedException e ) 
 			{
 				e.printStackTrace();
