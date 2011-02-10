@@ -153,6 +153,11 @@ public class Laboratory implements Environment {
 	public boolean isGrabbed() {
 		return envStatus.isGrabbed();
 	}
+	
+	public boolean isOnTheBox()
+	{
+		return envStatus.isOnTheBox();
+	}
 
 	/**
 	 * Sets the position of the box.

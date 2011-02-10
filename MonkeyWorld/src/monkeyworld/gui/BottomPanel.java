@@ -150,7 +150,7 @@ public class BottomPanel extends JPanel {
 				graphics.drawRect( i * size + 100, bottomPosition + 60, size, size );				
 			}
 		}
-		if ( lab.getMonkey() == lab.getBox() ) 
+		if( lab.isOnTheBox() )
 		{
 			graphics.drawImage( monkey, lab.getMonkey() * size + 100, ( bottomPosition + topPosition ) / 2, null );
 		} 
