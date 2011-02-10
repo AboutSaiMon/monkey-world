@@ -28,12 +28,12 @@ public class MonkeyAction implements Action {
 
 	private boolean goOut;
 	private boolean goHome;
-	private boolean moveLeft;
-	private boolean moveRight;
-	private boolean pushLeft;
-	private boolean pushRight;
-	private boolean pullLeft;
-	private boolean pullRight;
+	private boolean goLeft;
+	private boolean goRight;
+	private boolean moveBoxLeft;
+	private boolean moveBoxRight;
+	private boolean climb;
+	private boolean descend;
 	private boolean grab;
 	private boolean noOp;
 	private ActionType actionType;
@@ -56,12 +56,12 @@ public class MonkeyAction implements Action {
 	private void reset() {
 		goOut = false;
 		goHome = false;
-		moveLeft = false;
-		moveRight = false;
-		pushLeft = false;
-		pushRight = false;
-		pullLeft = false;
-		pullRight = false;
+		goLeft = false;
+		goRight = false;
+		moveBoxLeft = false;
+		moveBoxRight = false;
+		climb = false;
+		descend = false;
 		grab = false;
 		noOp = false;
 	}
@@ -74,18 +74,18 @@ public class MonkeyAction implements Action {
 			goOut = true;
 		} else if (type.equals(ActionType.GO_HOME)) {
 			goHome = true;
-		} else if (type.equals(ActionType.MOVE_LEFT)) {
-			moveLeft = true;
-		} else if (type.equals(ActionType.MOVE_RIGHT)) {
-			moveRight = true;
-		} else if (type.equals(ActionType.PUSH_LEFT)) {
-			pushLeft = true;
-		} else if (type.equals(ActionType.PUSH_RIGHT)) {
-			pushRight = true;
-		} else if( type.equals(ActionType.PULL_LEFT)) {
-			pullLeft = true;
-		} else if( type.equals(ActionType.PULL_RIGHT)) {
-			pullRight = true;
+		} else if (type.equals(ActionType.GO_LEFT)) {
+			goLeft = true;
+		} else if (type.equals(ActionType.GO_RIGHT)) {
+			goRight = true;
+		} else if (type.equals(ActionType.MOVE_BOX_LEFT)) {
+			moveBoxLeft = true;
+		} else if( type.equals(ActionType.MOVE_BOX_RIGHT)) {
+			moveBoxRight = true;
+		} else if (type.equals(ActionType.CLIMB)) {
+			climb = true;
+		} else if (type.equals(ActionType.DESCEND)) {
+			descend = true;
 		} else if (type.equals(ActionType.GRAB)) {
 			grab = true;
 		} else if (type.equals(ActionType.NO_OP)) {
@@ -99,66 +99,66 @@ public class MonkeyAction implements Action {
 	}
 
 	/**
-	 * @return true if this is a <b>GO_OUT</b> Action.
+	 * @return true if this is a <b>GO_OUT</b> action
 	 */
 	public boolean isGoOut() {
 		return goOut;
 	}
 
 	/**
-	 * @return true if this is a <b>GO_HOME</b> Action.
+	 * @return true if this is a <b>GO_HOME</b> action.
 	 */
 	public boolean isGoHome() {
 		return goHome;
 	}
 
 	/**
-	 * @return true if this is a <b>MOVE_LEFT</b> Action.
+	 * @return true if this is a <b>MOVE_LEFT</b> action.
 	 */
-	public boolean isMoveLeft() {
-		return moveLeft;
+	public boolean isGoLeft() {
+		return goLeft;
 	}
 
 	/**
-	 * @return true if this is a <b>MOVE_RIGHT</b> Action.
+	 * @return true if this is a <b>MOVE_RIGHT</b> action.
 	 */
-	public boolean isMoveRight() {
-		return moveRight;
+	public boolean isGoRight() {
+		return goRight;
+	}
+	
+	/**
+	 * @return true if this is a <b>MOVE_BOX_LEFT</b> action.
+	 */
+	public boolean isMoveBoxLeft() {
+		return moveBoxLeft;
+	}
+	
+	/**
+	 * @return true if this is a <b>MOVE_BOX_RIGHT</b> action.
+	 */
+	public boolean isMoveBoxRight() {
+		return moveBoxRight;
+	}
+	
+	/**
+	 * @return true if this is a <b>CLIMB</b> action.
+	 */
+	public boolean isClimb() {
+		return climb;
+	}
+	
+	/**
+	 * @return true if this is a <b>DESCEND</b> action.
+	 */
+	public boolean isDescend() {
+		return descend;
 	}
 
 	/**
-	 * @return true if this is a <b>PUSH_LEFT</b> Action.
-	 */
-	public boolean isPushLeft() {
-		return pushLeft;
-	}
-
-	/**
-	 * @return true if this is a <b>PUSH_RIGHT</b> Action.
-	 */
-	public boolean isPushRight() {
-		return pushRight;
-	}
-
-	/**
-	 * @return true if this is a <b>PULL_LEFT</b> Action.
-	 */
-	public boolean isPullLeft() {
-		return pullLeft;
-	}
-
-	/**
-	 * @return true if this is a <b>PULL_RIGHT</b> Action.
-	 */
-	public boolean isPullRight() {
-		return pullRight;
-	}
-
-	/**
-	 * @return true if this is a <b>GRAB</b> Action.
+	 * @return true if this is a <b>GRAB</b> action.
 	 */
 	public boolean isGrab() {
 		return grab;
 	}
-	
+
 }

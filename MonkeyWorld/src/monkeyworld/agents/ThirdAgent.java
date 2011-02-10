@@ -17,263 +17,138 @@
  */
 package monkeyworld.agents;
 
-import org.oreilly.is.Percept;
-
-import java.lang.Math;
-
 import monkeyworld.core.agent.ActionType;
 import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.agent.MonkeyAction;
 import monkeyworld.core.agent.MonkeyPerception;
 
+import org.oreilly.is.Percept;
+
 /**
- *
+ * 
  * @author Deep Blue Team
  */
-public class ThirdAgent extends Monkey
-{
-	
-	//This enum needs to know in which step we are. 
-	private enum CURRENTSTEP{ INIT, FIND_BOX, FIND_BANANA, KEEP_BANANA, BACK_BOX, BACK_AT_HOME, FINISH };
-	
-	//Current step
+public class ThirdAgent extends Monkey {
+
+	// This enum needs to know in which step we are.
+	private enum CURRENTSTEP {
+		INIT, FIND_BOX, FIND_BANANA, KEEP_BANANA, BACK_BOX, BACK_AT_HOME, FINISH
+	};
+
+	// Current step
 	private CURRENTSTEP step;
 	private int homePosition;
 	private int initialBoxPosition;
-	
-	
+
 	/**
 	 * Only invoke the super constructor and set the initial step.
 	 */
-	public ThirdAgent() 
-	{
+	public ThirdAgent() {
 		super();
 		step = CURRENTSTEP.INIT;
 	}
-	
+
 	@Override
-	public MonkeyAction execute( Percept percept ) 
-	{
-		MonkeyAction a = new MonkeyAction( ActionType.NO_OP );
-		
+	public MonkeyAction execute(Percept percept) {
+		MonkeyAction a = new MonkeyAction(ActionType.NO_OP);
 		MonkeyPerception monkeyPerception;
-		
-		if( percept instanceof MonkeyPerception )
-			monkeyPerception = ( MonkeyPerception ) percept;
-		else
-		{
+		if (percept instanceof MonkeyPerception)
+			monkeyPerception = (MonkeyPerception) percept;
+		else {
 			return a;
 		}
-		
-		if( monkeyPerception.getMonkey() >= 10 )
-		{
-			a = new MonkeyAction( ActionType.GO_OUT );
+		if (monkeyPerception.getMonkey() >= 10) {
+			a = new MonkeyAction(ActionType.GO_OUT);
 			return a;
 		}
-	
-		if( step == CURRENTSTEP.INIT )
-		{
+		if (step == CURRENTSTEP.INIT) {
 			homePosition = monkeyPerception.getMonkey();
 			initialBoxPosition = monkeyPerception.getBox();
-			step = CURRENTSTEP.FIND_BOX;			
-		}		
-		else if( step == CURRENTSTEP.FIND_BOX )
-		{
-			return findBox( monkeyPerception.getBox(), monkeyPerception.getMonkey() );
-		}
-		else if( step == CURRENTSTEP.FIND_BANANA )
-		{
-			return findBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch() );
-		}
-		else if( step == CURRENTSTEP.KEEP_BANANA )
-		{			
-			return keepBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch(), monkeyPerception.isGrabbed() );
-		}
-		else if( step == CURRENTSTEP.BACK_BOX )
-		{
-			return backBox( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch() ); 
-		}		
-		else if( step == CURRENTSTEP.BACK_AT_HOME )
-		{
-			return backAtHome( monkeyPerception.getMonkey() );
-		}
-		else if( step == CURRENTSTEP.FINISH )
-		{
-			a = new MonkeyAction( ActionType.GO_HOME );
-			this.setAlive( false );
+			step = CURRENTSTEP.FIND_BOX;
+		} else if (step == CURRENTSTEP.FIND_BOX) {
+			return findBox(monkeyPerception.getBox(),
+					monkeyPerception.getMonkey());
+		} else if (step == CURRENTSTEP.FIND_BANANA) {
+			return findBanana(monkeyPerception.getBox(),
+					monkeyPerception.getMonkey(),
+					monkeyPerception.getBananasBunch());
+		} else if (step == CURRENTSTEP.KEEP_BANANA) {
+			return keepBanana(monkeyPerception.getBox(),
+					monkeyPerception.getMonkey(),
+					monkeyPerception.getBananasBunch());
+		} else if (step == CURRENTSTEP.BACK_BOX) {
+			return backBox(monkeyPerception.getBox(),
+					monkeyPerception.getMonkey(),
+					monkeyPerception.getBananasBunch());
+		} else if (step == CURRENTSTEP.BACK_AT_HOME) {
+
 		}
 		return a;
 	}
-	
-	private MonkeyAction findBox( int boxPosition, int monkeyPosition )
-	{		
-		if( Math.abs( boxPosition - monkeyPosition ) == 1 )
-		{
+
+	private MonkeyAction findBox(int boxPosition, int monkeyPosition) {
+		if (Math.abs(boxPosition - monkeyPosition) == 1) {
 			step = CURRENTSTEP.FIND_BANANA;
-			MonkeyAction a = new MonkeyAction( ActionType.NO_OP );
+			MonkeyAction a = new MonkeyAction(ActionType.NO_OP);
 			return a;
 		}
-		
-		MonkeyAction a;
-		if( boxPosition > monkeyPosition )
-		{
-			a = new MonkeyAction( ActionType.MOVE_RIGHT );
-		}
-		else
-		{
-			a = new MonkeyAction( ActionType.MOVE_LEFT );
+		MonkeyAction a = null;
+		if (monkeyPosition < boxPosition) {
+			a = new MonkeyAction(ActionType.GO_RIGHT);
+		} else if (boxPosition < monkeyPosition) {
+			a = new MonkeyAction(ActionType.GO_LEFT);
 		}
 		return a;
 	}
-		
-	private MonkeyAction findBanana( int boxPosition, int monkeyPosition, int bananaPosition )
-	{
-		MonkeyAction a;
-		if( boxPosition == bananaPosition )
-		{
-			if( boxPosition > monkeyPosition )
-			{
-				a = new MonkeyAction( ActionType.MOVE_RIGHT );
-			}
-			else
-			{
-				a = new MonkeyAction( ActionType.MOVE_LEFT );
+
+	private MonkeyAction findBanana(int boxPosition, int monkeyPosition, int bananaPosition) {
+		MonkeyAction a = null;
+		if (boxPosition == bananaPosition) {
+			if (monkeyPosition < boxPosition) {
+				a = new MonkeyAction(ActionType.GO_RIGHT);
+			} else if (boxPosition < monkeyPosition) {
+				a = new MonkeyAction(ActionType.GO_LEFT);
 			}
 			step = CURRENTSTEP.KEEP_BANANA;
-			return a;
-		}
-		else
-		{
-			if( boxPosition > bananaPosition )
-			{
-				if( boxPosition > monkeyPosition )
-				{
-					a = new MonkeyAction( ActionType.PULL_LEFT );
-				}
-				else
-				{
-					a = new MonkeyAction( ActionType.PUSH_LEFT );
-				}
-			}
-			else
-			{
-				if( boxPosition > monkeyPosition )
-				{
-					a = new MonkeyAction( ActionType.PUSH_RIGHT );
-				}
-				else
-				{
-					a = new MonkeyAction( ActionType.PULL_RIGHT );
-				}
+		} else {
+			if (bananaPosition < boxPosition) {
+				a = new MonkeyAction(ActionType.MOVE_BOX_LEFT);
+			} else if (boxPosition < bananaPosition) {
+				a = new MonkeyAction(ActionType.MOVE_BOX_RIGHT);
 			}
 		}
-		
 		return a;
 	}
-	
-	private MonkeyAction keepBanana( int boxPosition, int monkeyPosition, int bananaPosition, boolean grabbed )
-	{
+
+	private MonkeyAction keepBanana(int boxPosition, int monkeyPosition, int bananaPosition) {
 		MonkeyAction a;
-		
-		if( grabbed )
-		{			
+		if (monkeyPosition == 0)
+			a = new MonkeyAction(ActionType.GO_RIGHT);
+		else
+			a = new MonkeyAction(ActionType.GO_LEFT);
+
+		if (boxPosition == monkeyPosition && monkeyPosition == bananaPosition) {
+			a = new MonkeyAction(ActionType.GRAB);
 			step = CURRENTSTEP.BACK_BOX;
+			return a;
 		}
-		else
-		{
-			step = CURRENTSTEP.FIND_BANANA;
-		}
-		
-		if( boxPosition == monkeyPosition && monkeyPosition == bananaPosition )
-		{
-			a = new MonkeyAction( ActionType.GRAB );
-		}
-		else
-		{
-			if( boxPosition == monkeyPosition )
-			{
-				if( monkeyPosition > bananaPosition )
-					a = new MonkeyAction( ActionType.MOVE_RIGHT );
-				else
-					a = new MonkeyAction( ActionType.MOVE_LEFT );
-			}
-			else
-			{
-				a = new MonkeyAction( ActionType.NO_OP );
-			}
-		}
-		
 		return a;
 	}
-	
-	private MonkeyAction backBox( int boxPosition, int monkeyPosition, int bananaPosition )
-	{
+
+	private MonkeyAction backBox(int boxPosition, int monkeyPosition, int bananaPosition) {
 		MonkeyAction a;
-		//TODO Insert a boolean tag to know if banana is grabbed or less.
-		
-		if( boxPosition == initialBoxPosition )
-		{
+		// TODO Insert a boolean tag to know if banana is grabbed or less.
+		// if( not grabbed )
+		// step = CURRENTSTEP.KEEPBANANA;
+		// TODO: <aggiunto da Simone> ho messo un flag isGrabbed e un'altro isOnTheBox
+
+		if (boxPosition == initialBoxPosition) {
 			step = CURRENTSTEP.BACK_AT_HOME;
-			a = new MonkeyAction( ActionType.NO_OP );			
+			a = new MonkeyAction(ActionType.NO_OP);
 			return a;
 		}
-		
-		if( boxPosition == monkeyPosition )
-		{
-			if( monkeyPosition > initialBoxPosition )
-			{
-				a = new MonkeyAction( ActionType.MOVE_RIGHT );
-			}
-			else
-			{
-				a = new MonkeyAction( ActionType.MOVE_LEFT );
-			}
-			return a;
-		}
-		
-		if( boxPosition > initialBoxPosition )
-		{
-			if( boxPosition > monkeyPosition )
-			{
-				a = new MonkeyAction( ActionType.PULL_LEFT );
-			}
-			else
-			{
-				a = new MonkeyAction( ActionType.PUSH_LEFT );
-			}
-		}
-		else
-		{
-			if( boxPosition > monkeyPosition )
-			{
-				a = new MonkeyAction( ActionType.PUSH_RIGHT );
-			}
-			else
-			{
-				a = new MonkeyAction( ActionType.PULL_RIGHT );
-			}
-		}
-		return a;		
+
+		return null;
 	}
-	
-	private MonkeyAction backAtHome( int monkeyPosition )
-	{
-		MonkeyAction a;
-		if( monkeyPosition == homePosition )
-		{
-			step = CURRENTSTEP.FINISH;
-			a = new MonkeyAction( ActionType.NO_OP );			
-			return a;
-		}
-		
-		if( homePosition > monkeyPosition )
-		{
-			a = new MonkeyAction( ActionType.MOVE_RIGHT );
-		}
-		else
-		{
-			a = new MonkeyAction( ActionType.MOVE_LEFT );
-		}
-		return a;
-	}	
+
 }

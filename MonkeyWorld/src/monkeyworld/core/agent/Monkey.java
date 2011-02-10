@@ -41,11 +41,7 @@ public class Monkey implements Agent {
 		// TODO: debug code //
 		actions = new LinkedList<MonkeyAction>();
 		actions.add(new MonkeyAction(ActionType.GO_OUT));
-		actions.add(new MonkeyAction(ActionType.MOVE_RIGHT));
-		actions.add(new MonkeyAction(ActionType.MOVE_RIGHT));
 		actions.add(new MonkeyAction(ActionType.GRAB));
-		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
-		actions.add(new MonkeyAction(ActionType.MOVE_LEFT));
 		actions.add(new MonkeyAction(ActionType.GO_HOME));
 		// TODO: end debug code //
 	}

@@ -57,7 +57,8 @@ public class EnvStatusModifier {
 	}
 
 	/**
-	 * Checks and moves the monkey out of the home.
+	 * Moves the monkey out of the home, after checking if it can do this
+	 * action.
 	 */
 	public void goOut() {
 		if (canGoOut()) {
@@ -66,7 +67,7 @@ public class EnvStatusModifier {
 	}
 
 	/**
-	 * Checks and moves the monkey toward home.
+	 * Moves the monkey toward home, after checking if it can do this action.
 	 */
 	public void goHome() {
 		if (canGoHome()) {
@@ -75,77 +76,64 @@ public class EnvStatusModifier {
 	}
 
 	/**
-	 * Checks and moves the monkey one step to the left.
+	 * Moves the monkey one step to the left, after checking if it can do this
+	 * action.
 	 */
-	public void moveLeft() {
-		if (canMoveLeft()) {
+	public void goLeft() {
+		if (canGoLeft()) {
 			status.setMonkey(status.getMonkey() - 1);
 		}
 	}
 
 	/**
-	 * Check and moves the monkey one step to the right.
+	 * Moves the monkey one step to the right, after checking if it can do this
+	 * action.
 	 */
-	public void moveRight() {
-		if (canMoveRight()) {
+	public void goRight() {
+		if (canGoRight()) {
 			status.setMonkey(status.getMonkey() + 1);
 		}
 	}
 
-	/*
-	 * Moves the monkey and the box one step to the left.
-	 */
-	private void left() {
-		status.setMonkey(status.getMonkey() - 1);
-		status.setBox(status.getBox() - 1);
-	}
-
-	/*
-	 * Moves the monkey and the box one step to the right. 
-	 */
-	private void right() {
-		status.setMonkey(status.getMonkey() + 1);
-		status.setBox(status.getBox() + 1);
-	}
-
 	/**
-	 * Checks and pushes the box to the left.
+	 * Moves the monkey and the box one step to the left, after checking if it
+	 * can do this action.
 	 */
-	public void pushLeft() {
-		if (canPushLeft()) {
-			left();
+	public void moveBoxLeft() {
+		if (canMoveBoxLeft()) {
+			status.setMonkey(status.getMonkey() - 1);
+			status.setBox(status.getBox() - 1);
 		}
 	}
 
 	/**
-	 * Checks and pushes the box to the right.
+	 * Moves the monkey and the box one step to the right, after checking if it
+	 * can do this action.
 	 */
-	public void pushRight() {
-		if (canPushRight()) {
-			right();
+	public void moveBoxRight() {
+		if (canMoveBoxRight()) {
+			status.setMonkey(status.getMonkey() + 1);
+			status.setBox(status.getBox() + 1);
 		}
 	}
 
 	/**
-	 * Check and pulls the box to the left.
+	 * Climbs on the box, if it's possible.
 	 */
-	public void pullLeft() {
-		if (canPullLeft()) {
-			left();
+	public void climb() {
+		if (canClimb()) {
+			status.climb();
+		}
+	}
+
+	public void descend() {
+		if( canDescend() ) {
+			status.descend();
 		}
 	}
 
 	/**
-	 * Check and pulls the box to the right.
-	 */
-	public void pullRight() {
-		if (canPullRight()) {
-			right();
-		}
-	}
-
-	/**
-	 * Checks if the monkey can grab the bunch of bananas and then grab. 
+	 * Checks if the monkey can grab the bunch of bananas and then grab.
 	 */
 	public void grab() {
 		if (canGrab()) {
@@ -154,7 +142,7 @@ public class EnvStatusModifier {
 	}
 
 	/*
-	 * True if the monkey can go out.
+	 * True if the monkey is at home.
 	 */
 	private boolean canGoOut() {
 		int monkey = status.getMonkey();
@@ -163,7 +151,7 @@ public class EnvStatusModifier {
 	}
 
 	/*
-	 * True if the monkey can go home.
+	 * True if the monkey is close home.
 	 */
 	private boolean canGoHome() {
 		int monkey = status.getMonkey();
@@ -172,66 +160,67 @@ public class EnvStatusModifier {
 	}
 
 	/*
-	 * True if the monkey can go left.
+	 * True if the monkey position is greater than zero.
 	 */
-	private boolean canMoveLeft() {
+	private boolean canGoLeft() {
 		int monkey = status.getMonkey();
-		return monkey > 0 && monkey < length;
+		return monkey > 0;
 	}
 
 	/*
-	 * True if the monkey can go right.
+	 * True if the monkey position is lesser than "length - 1".
 	 */
-	private boolean canMoveRight() {
+	private boolean canGoRight() {
 		int monkey = status.getMonkey();
-		return monkey >= 0 && monkey < length - 1;
+		return monkey < length - 1;
 	}
 
 	/*
-	 * True if the monkey can push the box to the left.
+	 * True if the monkey is in the same position of the box
+	 * and if the box position is greater than zero.
 	 */
-	private boolean canPushLeft() {
-		int monkey = status.getMonkey();
-		int box = status.getBox();
-		return box == monkey - 1 && box > 0;
-	}
-
-	/*
-	 * True if the monkey can push the box to the right.
-	 */
-	private boolean canPushRight() {
+	private boolean canMoveBoxLeft() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return box == monkey + 1 && box < length - 1;
+		return monkey == box && box > 0;
 	}
 
 	/*
-	 * True if the monkey can pull the box to the left.
+	 * True if the monkey is in the same position of the box
+	 * and if the box position is lesser than "length - 1".
 	 */
-	private boolean canPullLeft() {
+	private boolean canMoveBoxRight() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return monkey == box - 1 && monkey > 0;
+		return monkey == box && box < length - 1;
 	}
 
 	/*
-	 * True if the monkey can pull the box to the right.
+	 * True if the monkey is in the same position of the box and
+	 * is not on top of the box.
 	 */
-	private boolean canPullRight() {
+	private boolean canClimb() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return monkey == box + 1 && monkey < length - 1;
+		return monkey == box && !status.isOnTheBox();
 	}
-
+	
 	/*
-	 * True if the monkey can grab the bunch of bananas.
+	 * True if the monkey is upon the box.
+	 */
+	private boolean canDescend() {
+		return status.isOnTheBox();
+	}
+	
+	/*
+	 * True if the banana is not grabbed yet, the monkey is in the same
+	 * position of the box bananas bunch and is on the box.
 	 */
 	private boolean canGrab() {
 		int monkey = status.getMonkey();
-		int box = status.getBox();
 		int bananasBunch = status.getBananasBunch();
 		boolean grabbed = status.isGrabbed();
-		return !grabbed && monkey == box && monkey == bananasBunch;
+		return !grabbed && monkey == bananasBunch && status.isOnTheBox();
 	}
 
 }

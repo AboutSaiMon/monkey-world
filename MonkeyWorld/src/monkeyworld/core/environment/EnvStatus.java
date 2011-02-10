@@ -33,6 +33,7 @@ public class EnvStatus {
 	private int home;
 	private int monkey;
 	private int length;
+	private boolean onTheBox;
 	private boolean grabbed;
 	private int counter;
 
@@ -56,19 +57,20 @@ public class EnvStatus {
 		monkey = home;
 		bananasBunch = 0;
 		box = 1;
+		onTheBox = false;
 		grabbed = false;
 		bananasLock = new ReentrantLock(true);
 		counter = 0;
 	}
-	
+
 	public boolean isFirstStep() {
 		return counter == 0;
 	}
-	
+
 	public void incrementCounter() {
 		counter++;
 	}
-	
+
 	public int getCounter() {
 		return counter;
 	}
@@ -89,7 +91,7 @@ public class EnvStatus {
 			throw new IllegalArgumentException(message.toString());
 		}
 	}
-	
+
 	private void checkMonkeyPosition(int position) {
 		if (position < 0 || position == length || position > 2 * length) {
 			StringBuilder message = new StringBuilder();
@@ -147,6 +149,29 @@ public class EnvStatus {
 		bananasLock.lock();
 		grabbed = true;
 		bananasLock.unlock();
+	}
+
+	/**
+	 * Tells whether or not the monkey is on the box.
+	 * 
+	 * @return true if the monkey climbed on the box
+	 */
+	public boolean isOnTheBox() {
+		return onTheBox;
+	}
+
+	/**
+	 * Climbs on the box.
+	 */
+	public void climb() {
+		onTheBox = true;
+	}
+	
+	/**
+	 * Descends from the box.
+	 */
+	public void descend() {
+		onTheBox = false;
 	}
 
 	/**

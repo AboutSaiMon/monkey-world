@@ -210,18 +210,18 @@ public class Laboratory implements Environment {
 			envModifier.goOut();
 		} else if (action.isGoHome()) {
 			envModifier.goHome();
-		} else if (action.isMoveLeft()) {
-			envModifier.moveLeft();
-		} else if (action.isMoveRight()) {
-			envModifier.moveRight();
-		} else if (action.isPushLeft()) {
-			envModifier.pushLeft();
-		} else if (action.isPushRight()) {
-			envModifier.pushRight();
-		} else if (action.isPullLeft()) {
-			envModifier.pullLeft();
-		} else if (action.isPullRight()) {
-			envModifier.pullRight();
+		} else if (action.isGoLeft()) {
+			envModifier.goLeft();
+		} else if (action.isGoRight()) {
+			envModifier.goRight();
+		} else if (action.isMoveBoxLeft()) {
+			envModifier.moveBoxLeft();
+		} else if (action.isMoveBoxRight()) {
+			envModifier.moveBoxRight();
+		} else if (action.isClimb()) {
+			envModifier.climb();
+		} else if (action.isDescend()) {
+			envModifier.descend();
 		} else if (action.isGrab()) {
 			envModifier.grab();
 		}
