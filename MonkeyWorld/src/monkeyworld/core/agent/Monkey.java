@@ -18,18 +18,16 @@
 package monkeyworld.core.agent;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
-import monkeyworld.core.KPlannerAction;
 import monkeyworld.core.Planner;
 
 import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
 /**
- * Is the agent of this project.
+ * It's the agent for the first type of the environment.
  * 
  * @author Deep Blue Team
  */
@@ -75,6 +73,9 @@ public class Monkey implements Agent {
 		this.alive = alive;
 	}
 
+	/*
+	 * Builds the plan, retrieving the information from DLV.
+	 */
 	private void buildPlan(Percept percept) {
 		// adds the first action
 		plan.add(ActionType.GO_OUT);
@@ -102,6 +103,9 @@ public class Monkey implements Agent {
 		plan.add(ActionType.GO_HOME);
 	}
 
+	/*
+	 * Creates the plan from home until the bananas bunch.
+	 */
 	private void oneWayPlan(Percept percept) {
 		// retrieves the perception
 		MonkeyPerception perception = (MonkeyPerception) percept;
@@ -116,6 +120,9 @@ public class Monkey implements Agent {
 
 	}
 
+	/*
+	 * Creates a sub plan from home until the box position.
+	 */
 	private void untilBox(int myPosition, int boxPosition) {
 		// gets the first sub goal (from home until the box)
 		LinkedList<String> actions = Planner.getPlanUntilBox(myPosition,
@@ -131,6 +138,9 @@ public class Monkey implements Agent {
 		}
 	}
 
+	/*
+	 * Creates a sub plan from the box until the bananas bunch
+	 */
 	private void untilBanana(int boxPosition, int bananasPosition) {
 		// gets the second sub goal (move the box until the banana)
 		LinkedList<String> actions = Planner.getPlanUntilBanana(boxPosition,
@@ -146,6 +156,9 @@ public class Monkey implements Agent {
 		}
 	}
 
+	/*
+	 * Reverses the list of actions
+	 */
 	private LinkedList<ActionType> getReversedActions() {
 		LinkedList<ActionType> temp = new LinkedList<ActionType>();
 		temp.addAll(plan);

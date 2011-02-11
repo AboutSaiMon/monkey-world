@@ -21,7 +21,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * This class represents the internal state of the environment.
+ * This is the internal state of the environment.
  * 
  * @author Deep Blue Team
  */
@@ -65,14 +65,23 @@ public class EnvStatus {
 		counter = 0;
 	}
 
+	/**
+	 * @return true if it is the first step of the environment.
+	 */
 	public boolean isFirstStep() {
 		return counter == 0;
 	}
 
+	/**
+	 * Increments the step counter.
+	 */
 	public void incrementCounter() {
 		counter++;
 	}
 
+	/**
+	 * @return the number of step performed until now.
+	 */
 	public int getCounter() {
 		return counter;
 	}

@@ -29,8 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
-import monkeyworld.agents.SecondAgent;
-import monkeyworld.agents.ThirdAgent;
+import monkeyworld.core.agent.SecondAgent;
+import monkeyworld.core.agent.ThirdAgent;
 import monkeyworld.core.environment.EnvType;
 import monkeyworld.core.environment.Laboratory;
 

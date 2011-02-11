@@ -15,16 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.agents;
+package monkeyworld.core.agent;
 
-import monkeyworld.core.agent.ActionType;
-import monkeyworld.core.agent.Monkey;
-import monkeyworld.core.agent.MonkeyAction;
-import monkeyworld.core.agent.MonkeyPerception;
 
 import org.oreilly.is.Percept;
 
 /**
+ * Is the agent for the third type of the environment.
  * 
  * @author Deep Blue Team
  */

@@ -19,9 +19,20 @@ package monkeyworld.core;
 
 import monkeyworld.gui.PrincipalFrame;
 
+/**
+ * This class contains the main of the program.
+ * 
+ * @author Deep Blue Team
+ */
 public class Main {
-	
+
+	/**
+	 * The entry point of the program.
+	 * 
+	 * @param args
+	 *            a list of input parameters
+	 */
 	public static void main(String[] args) {
 		new PrincipalFrame();
-	}	
+	}
 }

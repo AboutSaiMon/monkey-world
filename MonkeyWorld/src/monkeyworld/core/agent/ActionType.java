@@ -18,7 +18,7 @@
 package monkeyworld.core.agent;
 
 /**
- * Is just an enumeration of the possible actions the monkey can perform.
+ * Is an enumeration of the possible actions the monkey can perform.
  * 
  * @author Deep Blue Team
  */

@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 
 /**
- * It wraps DLV with K front-end, and retrieves the plan for the monkey.
+ * It wraps DLV with the K front-end, and retrieves the plan for the monkey.
  * 
  * @author Deep Blue Team
  */
@@ -54,12 +54,17 @@ public class Planner {
 
 	/**
 	 * Gets the subgoal until the bananas bunch
-	 * @param monkeyAndBox the monkey/box's position (they have the same position)
-	 * @param banana the banana's position
+	 * 
+	 * @param monkeyAndBox
+	 *            the monkey/box's position (they have the same position)
+	 * @param banana
+	 *            the banana's position
 	 * @return
 	 */
-	public static LinkedList<String> getPlanUntilBanana(int monkeyAndBox, int banana) {
-		return execute(KPlannerAction.MOVE_BOX, getGoalUntilBanana(monkeyAndBox, banana));
+	public static LinkedList<String> getPlanUntilBanana(int monkeyAndBox,
+			int banana) {
+		return execute(KPlannerAction.MOVE_BOX,
+				getGoalUntilBanana(monkeyAndBox, banana));
 	}
 
 	/*
@@ -79,8 +84,7 @@ public class Planner {
 		try {
 			// starts the process
 			process = processBuilder.start();
-			input = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
+			input = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			plan = getPlan(input.readLine(), action);
 		} catch (IOException e) {
 			e.printStackTrace();

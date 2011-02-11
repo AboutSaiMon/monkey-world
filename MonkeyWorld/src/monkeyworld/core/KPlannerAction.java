@@ -18,15 +18,16 @@
 package monkeyworld.core;
 
 /**
+ * Is an enumeration of costants.
  * 
  * @author Deep Blue Team
  */
 public interface KPlannerAction {
-	
+
 	public static final String GO = "go";
 	public static final String MOVE_BOX = "moveBox";
 	public static final String CLIMB = "climb";
 	public static final String GRAB = "grab";
 	public static final String DESCEND = "descend";
-	
+
 }
