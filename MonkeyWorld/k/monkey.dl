@@ -1,0 +1,4 @@
+object(box). object(monkey). object(banana).
+adjacent(X,Y) :- location(X), location(Y), #succ(X,Y).
+adjacent(X,Y) :- location(X), location(Y), #succ(Y,X).
+location(0..9).

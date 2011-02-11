@@ -1,0 +1,19 @@
+fluents:
+	at(O, L) requires object(O), location(L).
+
+actions:
+	go(L) requires location(L) costs 1.
+
+always:
+
+	executable go(Y) if at(monkey, X), adjacent(X, Y).
+	caused at(monkey, X) after go(X).
+	caused -at(monkey, Y) after go(X), adjacent(X, Y).
+	
+	inertial at(O, L).
+	
+	noConcurrency.
+
+% --- DEBUG WITH DLV --- %
+% initially: at(monkey, 4). at(box, 9).
+% goal: at(monkey, P), at(box, P) ? (5)

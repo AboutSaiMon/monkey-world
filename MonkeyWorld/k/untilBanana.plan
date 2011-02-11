@@ -1,0 +1,22 @@
+fluents:
+	at(O, L) requires object(O), location(L).
+
+actions:
+	moveBox(L) requires location(L) costs 1.
+
+always:
+
+	executable moveBox(Y) if at(monkey, X), at(box, X), adjacent(X, Y).
+	caused at(box, X) after moveBox(X).
+	caused at(monkey, X) after moveBox(X).
+	caused -at(box, Y) after moveBox(X), adjacent(X, Y).
+	caused -at(monkey, Y) after moveBox(X), adjacent(X, Y).
+	
+	inertial at(O, L).
+	
+	noConcurrency.
+	securePlan.
+
+% --- DEBUG WITH DLV --- %
+% initially: at(monkey, 7). at(box, 7). at(banana, 3).
+% goal: at(monkey, P), at(box, P), at(banana, P) ? (4)
