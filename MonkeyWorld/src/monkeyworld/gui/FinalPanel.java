@@ -29,7 +29,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
+import monkeyworld.agents.SecondAgent;
 import monkeyworld.agents.ThirdAgent;
+import monkeyworld.core.environment.EnvType;
 import monkeyworld.core.environment.Laboratory;
 
 /**
@@ -48,49 +50,78 @@ public class FinalPanel extends JPanel{
 	public FinalPanel(JFrame f, int choice) {
 		this.frame = f;
 		this.choice = choice;
-		frame.setSize(800, 800);
-		lab = new Laboratory( new ThirdAgent() );
+		frame.setSize(800, 800);		
 		createPanel();
 	}
 
 	private void createPanel() {
-		this.setBackground(Color.WHITE);
+		this.setBackground( Color.WHITE );
 
 		JPanel topPanel = new JPanel();
-		topPanel.setBackground(Color.CYAN);
+		topPanel.setBackground( Color.CYAN );
 
-		JLabel chooseTimeLabel = new JLabel("Time Banana Move: ");
-		JTextField chooseTime = new JTextField("1");
-		chooseTime.setPreferredSize(new Dimension(50, 20));
-		chooseTime.setToolTipText("Value: Min( 1 ), Max ( 50 )");
-		if (choice == 1) {
-			topPanel.add(chooseTimeLabel);
-			topPanel.add(chooseTime);
+		JLabel chooseTimeLabel = new JLabel( "Time Banana Move: " );
+		final JTextField chooseTime = new JTextField( "5" );
+		chooseTime.setPreferredSize( new Dimension( 50, 20 ) );
+		chooseTime.setToolTipText( "Value: Min( 1 ), Max ( 50 )" );
+		if (choice == 1) 
+		{
+			topPanel.add( chooseTimeLabel );
+			topPanel.add( chooseTime );
 		}
-		
-		bottomPanel = new BottomPanel(choice, lab);
+		switch( choice )
+		{
+			case 0:
+				lab = new Laboratory( new ThirdAgent() );
+				break;
+			case 1:
+				lab = new Laboratory( new SecondAgent(), EnvType.DYNAMIC );
+				break;
+			case 2:
+				lab = new Laboratory( new ThirdAgent(), EnvType.USER_DEFINED );
+				break;
+		}
+		bottomPanel = new BottomPanel( choice, lab );
 		bottomPanel.repaint();
 		
-		final JButton start = new JButton("Start");
-		start.addActionListener(new ActionListener() {
+		final JButton start = new JButton( "Start" );
+		start.addActionListener( new ActionListener() 
+		{
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				bottomPanel.setEditable(false);
-				start.setEnabled(false);
-				LaboratoryThread t = new LaboratoryThread(lab, bottomPanel);
+			public void actionPerformed( ActionEvent arg0 ) 
+			{
+				if( choice == 1 )
+				{		
+					int time = 1;
+					try
+					{
+						String tmp = chooseTime.getText();					
+						time = Integer.parseInt( tmp );
+						if( time == 0 )
+							time = 5;
+					}
+					catch (Exception e) {
+						// TODO: handle exception
+						time = 5;
+					}										
+					lab.setIntervalTime( time );
+				}
+				bottomPanel.setEditable( false );
+				start.setEnabled( false );
+				LaboratoryThread t = new LaboratoryThread( lab, bottomPanel );
 				t.start();
 			}
 		});
-		topPanel.add(start);
+		topPanel.add( start );
 
-		JSplitPane panel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
-		panel.setPreferredSize(new Dimension(800, 800));
+		JSplitPane panel = new JSplitPane( JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel );
+		panel.setPreferredSize( new Dimension( 800, 800 ) );
 
-		panel.setDividerLocation(70);
-		panel.setDividerSize(2);
-		panel.setEnabled(false);
+		panel.setDividerLocation( 70 );
+		panel.setDividerSize( 2 );
+		panel.setEnabled( false );
 
-		this.add(panel);
+		this.add( panel );
 	}
 }

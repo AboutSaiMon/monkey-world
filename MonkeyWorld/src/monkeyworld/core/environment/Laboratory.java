@@ -37,7 +37,7 @@ public class Laboratory implements Environment {
 	private boolean staticEnv = false;
 	private boolean dynamicEnv = false;
 	private boolean userDefinedEnv = false;
-	private ThreadBanana threadBanana;
+	private int intervalTime = 2;
 
 	/**
 	 * Creates a new environment, which is passed a reference to the agent.
@@ -71,7 +71,6 @@ public class Laboratory implements Environment {
 		if (this.envType.equals(EnvType.STATIC)) {
 			staticEnv = true;
 		} else if (this.envType.equals(EnvType.DYNAMIC)) {
-			threadBanana = new ThreadBanana(this);
 			dynamicEnv = true;
 		} else if (this.envType.equals(EnvType.USER_DEFINED)) {
 			userDefinedEnv = true;
@@ -86,7 +85,19 @@ public class Laboratory implements Environment {
 	 *            the interval time.
 	 */
 	public void setIntervalTime(int time) {
-		threadBanana.setIntervalTime(time);
+		this.intervalTime = time;
+	}
+	
+	/**
+	 * Get the time interval during which the bunch of bananas will remain
+	 * motionless. After this time, it will set a new location.
+	 * 
+	 * @return the interval time
+	 * 
+	 */
+	public int getIntervalTime()
+	{
+		return this.intervalTime;
 	}
 
 	/**
@@ -205,10 +216,7 @@ public class Laboratory implements Environment {
 	}
 
 	@Override
-	public void step() {
-		if (envStatus.isFirstStep() && isUserDefined()) {
-			threadBanana.start();
-		}
+	public void step() {		
 		MonkeyPerception perception = genPerception();
 		MonkeyAction action = monkey.execute(perception);
 		if (action.isGoOut()) {

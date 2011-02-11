@@ -56,12 +56,12 @@ public class BottomPanel extends JPanel {
 		lab = l;
 		setEditable(true);
 
-		this.setBackground(Color.WHITE);
+		this.setBackground( Color.WHITE );
 
 		Toolkit t = Toolkit.getDefaultToolkit();
-		monkey = t.getImage("src" + File.separator + "resources" + File.separator + "scimmia.jpg");
-		box = t.getImage("src" + File.separator + "resources" + File.separator + "box.png");
-		bananas = t.getImage("src" + File.separator + "resources" + File.separator + "bananas.jpg");
+		monkey = t.getImage( "src" + File.separator + "resources" + File.separator + "scimmia.jpg" );
+		box = t.getImage( "src" + File.separator + "resources" + File.separator + "box.png" );
+		bananas = t.getImage( "src" + File.separator + "resources" + File.separator + "bananas.jpg" );
 		MediaTracker mt = new MediaTracker( this );
 		mt.addImage( monkey, 0 );
 		mt.addImage( box, 1 );
@@ -71,12 +71,14 @@ public class BottomPanel extends JPanel {
 			mt.waitForID( 0 );
 			mt.waitForID( 1 );
 			mt.waitForID( 2 );
-		} catch ( InterruptedException e ) 
+		} 
+		catch ( InterruptedException e ) 
 		{
 			e.printStackTrace();
 		}
 
-		this.addMouseListener( new MouseListener() {
+		this.addMouseListener( new MouseListener() 
+		{
 
 			@Override
 			public void mouseReleased( MouseEvent e ) 

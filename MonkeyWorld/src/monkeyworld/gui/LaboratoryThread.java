@@ -17,6 +17,8 @@
  */
 package monkeyworld.gui;
 
+import java.util.Random;
+
 import monkeyworld.core.environment.Laboratory;
 
 /**
@@ -37,13 +39,34 @@ public class LaboratoryThread extends Thread {
 	@Override
 	public void run() 
 	{
+		int stepCount = 0;
 		while ( !lab.isDone() ) 
 		{
 			lab.step();
 			bottomPanel.repaint();
 			try 
-			{
+			{				
 				sleep( 600 );
+				if( lab.isDynamic() )
+				{					
+					if( stepCount == lab.getIntervalTime() )
+					{
+						Random r = new Random();
+						int oldPosition = lab.getBananasBunch();
+						int newPosition = 0;
+						do
+						{													
+							newPosition = r.nextInt( 10 );
+						}while( newPosition == oldPosition );
+						
+						lab.setBananasBunch( newPosition );
+						stepCount = 0;
+					}
+					else
+					{
+						stepCount++;
+					}
+				}
 			} catch ( InterruptedException e ) 
 			{
 				e.printStackTrace();
