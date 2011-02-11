@@ -18,9 +18,15 @@
 package monkeyworld.core;
 
 /**
- *
+ * 
  * @author Deep Blue Team
  */
-public class Pippa {
-
+public interface KPlannerAction {
+	
+	public static final String GO = "go";
+	public static final String MOVE_BOX = "moveBox";
+	public static final String CLIMB = "climb";
+	public static final String GRAB = "grab";
+	public static final String DESCEND = "descend";
+	
 }

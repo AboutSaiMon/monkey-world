@@ -15,31 +15,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package monkeyworld.core.environment;
+package monkeyworld.core.agent;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
+import monkeyworld.core.environment.EnvStatus;
+
 import org.junit.Test;
 
 /**
  *
  * @author Deep Blue Team
  */
-public class EnvStatusTest {
-	
+public class MonkeyTest {
+
+	// [go(1), go(2), go(3), go(4), go(5), go(6), go(7), go(8), moveBox(7),
+	// moveBox(6), moveBox(5), moveBox(4), climb, grab, grab, climb, moveBox(4),
+	// moveBox(5), moveBox(6), moveBox(7), go(8), go(7), go(6), go(5), go(4), go(3),
+	// go(2), go(1)]
 	@Test
-	public void bananasBunchTest() {
+	public void test() {
+		Monkey m = new Monkey();
 		EnvStatus status = new EnvStatus();
-		// check the consistency of the getter and setter
-		status.setBananasBunch(5);
-		assertThat(status.getBananasBunch(), is(equalTo(5)));
-		// check if the boolean flag works
-		status.setGrabbed(true);
-		assertThat(status.isGrabbed(), is(equalTo(true)));
-		// if the banana is grabbed, the setter method doesn't work
-		status.setBananasBunch(1);
-		assertThat(status.getBananasBunch(), is(equalTo(5)));
+		status.setHome(3);
+		status.setBox(5);
+		status.setBananasBunch(2);
+		MonkeyPerception percept = new MonkeyPerception();
+		percept.setBananasBunch(status.getBananasBunch());
+		percept.setBox(status.getBox());
+		percept.setHome(status.getHome());
+		percept.setMonkey(status.getMonkey());
+		System.out.println("Home: " + percept.getHome());
+		System.out.println("Monkey: " + percept.getMonkey());
 	}
 	
 }

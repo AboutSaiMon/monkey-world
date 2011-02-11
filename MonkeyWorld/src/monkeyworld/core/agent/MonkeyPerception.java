@@ -31,6 +31,8 @@ public class MonkeyPerception implements Percept {
 	private int home;
 	private int monkey;
 	private boolean grabbed;
+	private boolean onTheBox;
+	private boolean atHome;
 
 	/**
 	 * Creates a new perception.
@@ -40,6 +42,9 @@ public class MonkeyPerception implements Percept {
 		box = 0;
 		home = 0;
 		monkey = home;
+		atHome = true;
+		onTheBox = false;
+		grabbed = false;
 	}
 
 	/**
@@ -134,6 +139,34 @@ public class MonkeyPerception implements Percept {
 	 */
 	public void setGrabbed(boolean grabbed) {
 		this.grabbed = grabbed;
+	}
+	
+	/**
+	 * @return the atHome
+	 */
+	public boolean isAtHome() {
+		return atHome;
+	}
+	
+	/**
+	 * @param atHome the atHome to set
+	 */
+	public void setAtHome(boolean atHome) {
+		this.atHome = atHome;
+	}
+	
+	/**
+	 * @return the onTheBox
+	 */
+	public boolean isOnTheBox() {
+		return onTheBox;
+	}
+	
+	/**
+	 * @param onTheBox the onTheBox to set
+	 */
+	public void setOnTheBox(boolean onTheBox) {
+		this.onTheBox = onTheBox;
 	}
 
 }

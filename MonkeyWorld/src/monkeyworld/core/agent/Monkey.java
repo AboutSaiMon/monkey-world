@@ -17,7 +17,13 @@
  */
 package monkeyworld.core.agent;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
+
+import monkeyworld.core.KPlannerAction;
+import monkeyworld.core.Planner;
 
 import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
@@ -30,27 +36,31 @@ import org.oreilly.is.Percept;
 public class Monkey implements Agent {
 
 	private boolean alive;
-	// TODO: this field is for debug.
-	private LinkedList<MonkeyAction> actions;
+	private boolean firstStep;
+	private LinkedList<ActionType> plan;
 
 	/**
 	 * Create a new monkey.
 	 */
 	public Monkey() {
 		alive = true;
-		// TODO: debug code //
-		actions = new LinkedList<MonkeyAction>();
-		actions.add(new MonkeyAction(ActionType.GO_OUT));
-		actions.add(new MonkeyAction(ActionType.GRAB));
-		actions.add(new MonkeyAction(ActionType.GO_HOME));
-		// TODO: end debug code //
+		firstStep = true;
+		plan = new LinkedList<ActionType>();
 	}
 
 	@Override
 	public MonkeyAction execute(Percept percept) {
-		MonkeyAction action = actions.remove();
-		if (actions.isEmpty()) {
+		// if this method is called for the first time
+		if (firstStep) {
+			// builds the plan
+			buildPlan(percept);
+		}
+		MonkeyAction action = null;
+		if (!plan.isEmpty()) {
+			action = new MonkeyAction(plan.remove());
+		} else {
 			setAlive(false);
+			action = new MonkeyAction(ActionType.NO_OP);
 		}
 		return action;
 	}
@@ -63,6 +73,92 @@ public class Monkey implements Agent {
 	@Override
 	public void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	private void buildPlan(Percept percept) {
+		// adds the first action
+		plan.add(ActionType.GO_OUT);
+		// create the first half of the plan, until the bananas bunch
+		oneWayPlan(percept);
+		// gets the first half of the plan reversed
+		LinkedList<ActionType> reversedActions = getReversedActions();
+		// adds the middle plan
+		plan.add(ActionType.CLIMB);
+		plan.add(ActionType.GRAB);
+		plan.add(ActionType.DESCEND);
+		// add to the plan the opposite action of the reversed plan
+		for (ActionType action : reversedActions) {
+			if (action.equals(ActionType.MOVE_BOX_LEFT)) {
+				plan.add(ActionType.MOVE_BOX_RIGHT);
+			} else if (action.equals(ActionType.MOVE_BOX_RIGHT)) {
+				plan.add(ActionType.MOVE_BOX_LEFT);
+			} else if (action.equals(ActionType.GO_LEFT)) {
+				plan.add(ActionType.GO_RIGHT);
+			} else if (action.equals(ActionType.GO_RIGHT)) {
+				plan.add(ActionType.GO_LEFT);
+			}
+		}
+		// adds the last action
+		plan.add(ActionType.GO_HOME);
+	}
+
+	private void oneWayPlan(Percept percept) {
+		// retrieves the perception
+		MonkeyPerception perception = (MonkeyPerception) percept;
+		// gets the objects position from the perception
+		int myPosition = perception.getMonkey();
+		int boxPosition = perception.getBox();
+		int bananasPosition = perception.getBananasBunch();
+		// adds the actions until the box
+		untilBox(myPosition, boxPosition);
+		// adds the actions from the box until the bananas bunch
+		untilBanana(boxPosition, bananasPosition);
+
+	}
+
+	private void untilBox(int myPosition, int boxPosition) {
+		// gets the first sub goal (from home until the box)
+		LinkedList<String> actions = Planner.getPlanUntilBox(myPosition,
+				boxPosition);
+		int position;
+		for (String action : actions) {
+			position = getPosition(action);
+			if (myPosition < position) {
+				plan.add(ActionType.GO_RIGHT);
+			} else if (position < myPosition) {
+				plan.add(ActionType.GO_LEFT);
+			}
+		}
+	}
+
+	private void untilBanana(int boxPosition, int bananasPosition) {
+		// gets the second sub goal (move the box until the banana)
+		LinkedList<String> actions = Planner.getPlanUntilBanana(boxPosition,
+				bananasPosition);
+		int position;
+		for (String action : actions) {
+			position = getPosition(action);
+			if (boxPosition < position) {
+				plan.add(ActionType.MOVE_BOX_RIGHT);
+			} else if (position < boxPosition) {
+				plan.add(ActionType.MOVE_BOX_LEFT);
+			}
+		}
+	}
+
+	private LinkedList<ActionType> getReversedActions() {
+		LinkedList<ActionType> temp = new LinkedList<ActionType>();
+		temp.addAll(plan);
+		Collections.reverse(temp);
+		return temp;
+	}
+
+	/*
+	 * Splits the string "action", retrieving the number between the brackets.
+	 */
+	private int getPosition(String action) {
+		Pattern pattern = Pattern.compile("\\(|\\)");
+		return Integer.parseInt(pattern.split(action)[1]);
 	}
 
 }

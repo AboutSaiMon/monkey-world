@@ -87,7 +87,7 @@ public class Laboratory implements Environment {
 	public void setIntervalTime(int time) {
 		this.intervalTime = time;
 	}
-	
+
 	/**
 	 * Get the time interval during which the bunch of bananas will remain
 	 * motionless. After this time, it will set a new location.
@@ -95,8 +95,7 @@ public class Laboratory implements Environment {
 	 * @return the interval time
 	 * 
 	 */
-	public int getIntervalTime()
-	{
+	public int getIntervalTime() {
 		return this.intervalTime;
 	}
 
@@ -164,15 +163,16 @@ public class Laboratory implements Environment {
 	public boolean isGrabbed() {
 		return envStatus.isGrabbed();
 	}
-	
-	public boolean isOnTheBox()
-	{
+
+	public boolean isOnTheBox() {
 		return envStatus.isOnTheBox();
 	}
 
 	/**
 	 * Sets the position of the box.
-	 * @param position the box position
+	 * 
+	 * @param position
+	 *            the box position
 	 */
 	public void setBox(int position) {
 		envStatus.setBox(position);
@@ -180,6 +180,7 @@ public class Laboratory implements Environment {
 
 	/**
 	 * Gets the position of the box.
+	 * 
 	 * @return the box position
 	 */
 	public int getBox() {
@@ -188,7 +189,9 @@ public class Laboratory implements Environment {
 
 	/**
 	 * Sets the position of the home.
-	 * @param position the home position
+	 * 
+	 * @param position
+	 *            the home position
 	 */
 	public void setHome(int position) {
 		envStatus.setHome(position);
@@ -196,6 +199,7 @@ public class Laboratory implements Environment {
 
 	/**
 	 * Gets the position of the home.
+	 * 
 	 * @return the home position
 	 */
 	public int getHome() {
@@ -204,6 +208,7 @@ public class Laboratory implements Environment {
 
 	/**
 	 * Gets the position of the monkey.
+	 * 
 	 * @return the monkey position
 	 */
 	public int getMonkey() {
@@ -216,7 +221,7 @@ public class Laboratory implements Environment {
 	}
 
 	@Override
-	public void step() {		
+	public void step() {
 		MonkeyPerception perception = genPerception();
 		MonkeyAction action = monkey.execute(perception);
 		if (action.isGoOut()) {
@@ -240,19 +245,9 @@ public class Laboratory implements Environment {
 		}
 	}
 
-	private MonkeyPerception genPerception() {
-		MonkeyPerception perception = new MonkeyPerception();
-		perception.setBananasBunch(envStatus.getBananasBunch());
-		perception.setBox(envStatus.getBox());
-		perception.setHome(envStatus.getHome());
-		perception.setMonkey(envStatus.getMonkey());
-		perception.setGrabbed(envStatus.isGrabbed());
-		return perception;
-	}
-
 	@Override
 	public void step(int n) {
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n && !isDone(); i++) {
 			step();
 			sleep();
 		}
@@ -265,6 +260,23 @@ public class Laboratory implements Environment {
 			sleep();
 		}
 	}
+
+	@Override
+	public double getPerformanceMeasure() {
+		return 0;
+	}
+	
+	private MonkeyPerception genPerception() {
+		MonkeyPerception perception = new MonkeyPerception();
+		perception.setBananasBunch(envStatus.getBananasBunch());
+		perception.setBox(envStatus.getBox());
+		perception.setHome(envStatus.getHome());
+		perception.setMonkey(envStatus.getMonkey());
+		perception.setGrabbed(envStatus.isGrabbed());
+		perception.setAtHome(envStatus.isAtHome());
+		perception.setOnTheBox(envStatus.isOnTheBox());
+		return perception;
+	}
 	
 	private void sleep() {
 		try {
@@ -272,11 +284,6 @@ public class Laboratory implements Environment {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public double getPerformanceMeasure() {
-		return 0;
 	}
 
 }

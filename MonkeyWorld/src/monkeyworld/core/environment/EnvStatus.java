@@ -35,6 +35,7 @@ public class EnvStatus {
 	private int length;
 	private boolean onTheBox;
 	private boolean grabbed;
+	private boolean atHome;
 	private int counter;
 
 	/**
@@ -53,10 +54,11 @@ public class EnvStatus {
 	public EnvStatus(int length) {
 		checkLength(length);
 		this.length = length;
-		home = length + 1;
-		monkey = home;
+		home = 0;
+		monkey = 0;
 		bananasBunch = 0;
-		box = 1;
+		box = 0;
+		atHome = true;
 		onTheBox = false;
 		grabbed = false;
 		bananasLock = new ReentrantLock(true);
@@ -84,16 +86,6 @@ public class EnvStatus {
 
 	private void checkPosition(int position) {
 		if (position < 0 || position >= length) {
-			StringBuilder message = new StringBuilder();
-			message.append("\"" + position + "\" is not a valid position.");
-			message.append(" Please, insert a number between 0 and " + length
-					+ ".");
-			throw new IllegalArgumentException(message.toString());
-		}
-	}
-
-	private void checkMonkeyPosition(int position) {
-		if (position < 0 || position == length || position > 2 * length) {
 			StringBuilder message = new StringBuilder();
 			message.append("\"" + position + "\" is not a valid position.");
 			message.append(" Please, insert a number between 0 and " + length
@@ -141,13 +133,10 @@ public class EnvStatus {
 		bananasLock.unlock();
 		return flag;
 	}
-
-	/**
-	 * Grabs the bunch of bananas.
-	 */
-	public void grabBananasBunch() {
+	
+	public void setGrabbed(boolean grabbed) {
 		bananasLock.lock();
-		grabbed = true;
+		this.grabbed = grabbed;
 		bananasLock.unlock();
 	}
 
@@ -159,19 +148,12 @@ public class EnvStatus {
 	public boolean isOnTheBox() {
 		return onTheBox;
 	}
-
-	/**
-	 * Climbs on the box.
-	 */
-	public void climb() {
-		onTheBox = true;
-	}
 	
 	/**
-	 * Descends from the box.
+	 * @param flag
 	 */
-	public void descend() {
-		onTheBox = false;
+	public void setOnTheBox(boolean onTheBox) {
+		this.onTheBox = onTheBox;
 	}
 
 	/**
@@ -211,8 +193,16 @@ public class EnvStatus {
 	 */
 	public void setHome(int position) {
 		checkPosition(position);
-		home = position + length + 1;
+		home = position;
 		monkey = home;
+	}
+	
+	public boolean isAtHome() {
+		return atHome;
+	}
+	
+	public void setAtHome(boolean atHome) {
+		this.atHome = atHome;
 	}
 
 	/**
@@ -231,7 +221,7 @@ public class EnvStatus {
 	 *            the monkey position to set
 	 */
 	public void setMonkey(int position) {
-		checkMonkeyPosition(position);
+		checkPosition(position);
 		monkey = position;
 	}
 

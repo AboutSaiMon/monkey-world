@@ -26,36 +26,67 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 
 /**
+ * It wraps DLV with K front-end, and retrieves the plan for the monkey.
+ * 
  * @author Deep Blue Team
  */
 public class Planner {
 
-	private static final String[] untilBoxArgs = new String[] { "dlv", "-silent", "-FPsec", "k/untilBox.plan", "k/goal.plan", "k/monkey.dl" };
-	private static final String[] untilBananaArgs = new String[] { "dlv", "-silent", "-FPsec", "k/untilBanana.plan", "k/goal.plan", "k/monkey.dl" };
-	
-	public static void main(String[] args) {
-		LinkedList<String> plan = Planner.getUntilBananaPlan(3, 7);
-		System.out.println(plan);
+	private static final String[] UNTIL_BOX_ARGS = new String[] { "dlv",
+			"-silent", "-FPsec", "k/untilBox.plan", "k/goal.plan",
+			"k/monkey.dl" };
+	private static final String[] UNTIL_BANANA_ARGS = new String[] { "dlv",
+			"-silent", "-FPsec", "k/untilBanana.plan", "k/goal.plan",
+			"k/monkey.dl" };
+
+	/**
+	 * Gets the subgoal until the box.
+	 * 
+	 * @param monkey
+	 *            the monkey's position
+	 * @param box
+	 *            the box's position
+	 * @return a plan
+	 */
+	public static LinkedList<String> getPlanUntilBox(int monkey, int box) {
+		return execute(KPlannerAction.GO, getGoalUntilBox(monkey, box));
 	}
-	
-	public static LinkedList<String> getUntilBoxPlan(int monkey, int box) {
-		// creates the parameterized temp file
-		File goal = getUntilBoxGoal(monkey, box);
+
+	/**
+	 * Gets the subgoal until the bananas bunch
+	 * @param monkeyAndBox the monkey/box's position (they have the same position)
+	 * @param banana the banana's position
+	 * @return
+	 */
+	public static LinkedList<String> getPlanUntilBanana(int monkeyAndBox, int banana) {
+		return execute(KPlannerAction.MOVE_BOX, getGoalUntilBanana(monkeyAndBox, banana));
+	}
+
+	/*
+	 * Wraps dlv and retrieves a valid K plan.
+	 */
+	private static LinkedList<String> execute(String action, File goalFile) {
+		LinkedList<String> plan = null;
 		// creates a process builder with the given command
-		ProcessBuilder processBuilder = new ProcessBuilder(untilBoxArgs);
+		ProcessBuilder processBuilder = null;
+		if (action.equals(KPlannerAction.GO)) {
+			processBuilder = new ProcessBuilder(UNTIL_BOX_ARGS);
+		} else if (action.equals(KPlannerAction.MOVE_BOX)) {
+			processBuilder = new ProcessBuilder(UNTIL_BANANA_ARGS);
+		}
 		Process process = null;
 		BufferedReader input = null;
-		LinkedList<String> plan = null;
 		try {
 			// starts the process
 			process = processBuilder.start();
-			input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			plan = untilBoxPlan(input.readLine());
+			input = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+			plan = getPlan(input.readLine(), action);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			// close the input stream
-			if( input != null ) {
+			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
@@ -65,83 +96,42 @@ public class Planner {
 			// kills the subprocess
 			process.destroy();
 			// deletes the temp file
-			goal.delete();
+			goalFile.delete();
 		}
 		return plan;
 	}
 
 	/*
-	 * Gets the plan from the actual position to the box.
+	 * Gets a list of actions, retrieved from the "result" string.
 	 */
-	private static LinkedList<String> untilBoxPlan(String result) {
+	private static LinkedList<String> getPlan(String result, String action) {
 		LinkedList<String> plan = new LinkedList<String>();
 		String[] tokens = result.split(":|;");
-		for( String token : tokens ) {
-			if( token.contains("go")) {
+		for (String token : tokens) {
+			if (token.contains(action)) {
 				plan.add(token.trim());
 			}
 		}
 		return plan;
 	}
-	
+
 	/*
 	 * Creates the temp file that contains the goal of the "untilBox.plan".
 	 */
-	private static File getUntilBoxGoal(int monkey, int box) {
+	private static File getGoalUntilBox(int monkey, int box) {
 		int planLength = Math.abs(monkey - box);
 		StringBuilder findBox = new StringBuilder();
 		findBox.append("initially: at(monkey, ").append(monkey);
 		findBox.append("). at(box, ").append(box);
 		findBox.append("). goal: at(monkey, P), at(box, P) ? (");
 		findBox.append(planLength).append(")");
-		File goal = new File("k/goal.plan");
-		PrintWriter out = null;
-		try {
-			out = new PrintWriter(goal);
-			out.println(findBox.toString());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-		}
-		return goal;
+		return print(findBox);
 	}
-	
-	public static LinkedList<String> getUntilBananaPlan(int box, int banana) {
-		// creates the parameterized temp file
-		File goal = getUntilBananaGoal(box, banana);
-		// creates a process builder with the given command
-		ProcessBuilder processBuilder = new ProcessBuilder(untilBananaArgs);
-		Process process = null;
-		BufferedReader input = null;
-		LinkedList<String> plan = null;
-		try {
-			// starts the process
-			process = processBuilder.start();
-			input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			plan = untilBananaPlan(input.readLine());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			// close the input stream
-			if( input != null ) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			// kills the subprocess
-			process.destroy();
-			// deletes the temp file
-			goal.delete();
-		}
-		return plan;
-	}
-	
-	private static File getUntilBananaGoal(int monkeyAndBox, int banana) {
+
+	/*
+	 * Creates the temp file that contains the goal of the "untilBanana.plan".
+	 */
+	private static File getGoalUntilBanana(int monkeyAndBox, int banana) {
 		int planLength = Math.abs(monkeyAndBox - banana);
 		StringBuilder findBanana = new StringBuilder();
 		findBanana.append("initially:");
@@ -151,11 +141,18 @@ public class Planner {
 		findBanana.append("goal:");
 		findBanana.append("at(monkey, P), at(box, P), at(banana, P)?");
 		findBanana.append("(").append(planLength).append(")");
-		File goal = new File("k/goal.plan");
+		return print(findBanana);
+	}
+
+	/*
+	 * Creates the goal file.
+	 */
+	private static File print(StringBuilder goal) {
+		File goalFile = new File("k/goal.plan");
 		PrintWriter out = null;
 		try {
-			out = new PrintWriter(goal);
-			out.println(findBanana.toString());
+			out = new PrintWriter(goalFile);
+			out.println(goal.toString());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -163,18 +160,7 @@ public class Planner {
 				out.close();
 			}
 		}
-		return goal;
-	}
-	
-	private static LinkedList<String> untilBananaPlan(String result) {
-		LinkedList<String> plan = new LinkedList<String>();
-		String[] tokens = result.split(":|;");
-		for( String token : tokens ) {
-			if( token.contains("moveBox")) {
-				plan.add(token.trim());
-			}
-		}
-		return plan;
+		return goalFile;
 	}
 
 }

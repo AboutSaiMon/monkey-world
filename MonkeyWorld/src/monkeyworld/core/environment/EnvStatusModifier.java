@@ -62,7 +62,7 @@ public class EnvStatusModifier {
 	 */
 	public void goOut() {
 		if (canGoOut()) {
-			status.setMonkey(status.getMonkey() - length - 1);
+			status.setAtHome(false);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class EnvStatusModifier {
 	 */
 	public void goHome() {
 		if (canGoHome()) {
-			status.setMonkey(status.getMonkey() + length + 1);
+			status.setAtHome(true);
 		}
 	}
 
@@ -122,13 +122,13 @@ public class EnvStatusModifier {
 	 */
 	public void climb() {
 		if (canClimb()) {
-			status.climb();
+			status.setOnTheBox(true);
 		}
 	}
 
 	public void descend() {
 		if( canDescend() ) {
-			status.descend();
+			status.setOnTheBox(false);
 		}
 	}
 
@@ -137,7 +137,7 @@ public class EnvStatusModifier {
 	 */
 	public void grab() {
 		if (canGrab()) {
-			status.grabBananasBunch();
+			status.setGrabbed(true);
 		}
 	}
 
@@ -145,18 +145,16 @@ public class EnvStatusModifier {
 	 * True if the monkey is at home.
 	 */
 	private boolean canGoOut() {
-		int monkey = status.getMonkey();
-		int home = status.getHome();
-		return monkey == home;
+		return status.isAtHome();
 	}
 
 	/*
-	 * True if the monkey is close home.
+	 * True if the monkey is adjacent to home.
 	 */
 	private boolean canGoHome() {
 		int monkey = status.getMonkey();
 		int home = status.getHome();
-		return monkey + length + 1 == home;
+		return !status.isAtHome() && monkey == home;
 	}
 
 	/*
@@ -164,7 +162,7 @@ public class EnvStatusModifier {
 	 */
 	private boolean canGoLeft() {
 		int monkey = status.getMonkey();
-		return monkey > 0;
+		return !status.isAtHome() && monkey > 0;
 	}
 
 	/*
@@ -172,7 +170,7 @@ public class EnvStatusModifier {
 	 */
 	private boolean canGoRight() {
 		int monkey = status.getMonkey();
-		return monkey < length - 1;
+		return !status.isAtHome() && monkey < length - 1;
 	}
 
 	/*
@@ -182,7 +180,7 @@ public class EnvStatusModifier {
 	private boolean canMoveBoxLeft() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return monkey == box && box > 0;
+		return !status.isAtHome() && monkey == box && box > 0;
 	}
 
 	/*
@@ -192,7 +190,7 @@ public class EnvStatusModifier {
 	private boolean canMoveBoxRight() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return monkey == box && box < length - 1;
+		return !status.isAtHome() && monkey == box && box < length - 1;
 	}
 
 	/*
@@ -202,7 +200,7 @@ public class EnvStatusModifier {
 	private boolean canClimb() {
 		int monkey = status.getMonkey();
 		int box = status.getBox();
-		return monkey == box && !status.isOnTheBox();
+		return !status.isAtHome() && monkey == box && !status.isOnTheBox();
 	}
 	
 	/*
@@ -219,8 +217,7 @@ public class EnvStatusModifier {
 	private boolean canGrab() {
 		int monkey = status.getMonkey();
 		int bananasBunch = status.getBananasBunch();
-		boolean grabbed = status.isGrabbed();
-		return !grabbed && monkey == bananasBunch && status.isOnTheBox();
+		return status.isOnTheBox() && !status.isGrabbed() && monkey == bananasBunch;
 	}
 
 }
