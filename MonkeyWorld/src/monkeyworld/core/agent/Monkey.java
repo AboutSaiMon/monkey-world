@@ -50,6 +50,7 @@ public class Monkey implements Agent {
 	public MonkeyAction execute(Percept percept) {
 		// if this method is called for the first time
 		if (firstStep) {
+			firstStep = false;
 			// builds the plan
 			buildPlan(percept);
 		}

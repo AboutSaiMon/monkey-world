@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
+import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.agent.SecondAgent;
 import monkeyworld.core.agent.ThirdAgent;
 import monkeyworld.core.environment.EnvType;
@@ -72,7 +73,7 @@ public class FinalPanel extends JPanel{
 		switch( choice )
 		{
 			case 0:
-				lab = new Laboratory( new ThirdAgent() );
+				lab = new Laboratory( new Monkey() );
 				break;
 			case 1:
 				lab = new Laboratory( new SecondAgent(), EnvType.DYNAMIC );

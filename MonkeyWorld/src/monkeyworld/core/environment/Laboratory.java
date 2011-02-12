@@ -222,8 +222,7 @@ public class Laboratory implements Environment {
 
 	@Override
 	public void step() {
-		MonkeyPerception perception = genPerception();
-		MonkeyAction action = monkey.execute(perception);
+		MonkeyAction action = monkey.execute(new MonkeyPerception(envStatus));
 		if (action.isGoOut()) {
 			envModifier.goOut();
 		} else if (action.isGoHome()) {
@@ -266,6 +265,9 @@ public class Laboratory implements Environment {
 		return 0;
 	}
 	
+	/*
+	 * This method may be invocated if
+	 */
 	private MonkeyPerception genPerception() {
 		MonkeyPerception perception = new MonkeyPerception();
 		perception.setBananasBunch(envStatus.getBananasBunch());

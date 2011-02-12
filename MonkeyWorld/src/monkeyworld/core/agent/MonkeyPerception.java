@@ -17,6 +17,8 @@
  */
 package monkeyworld.core.agent;
 
+import monkeyworld.core.environment.EnvStatus;
+
 import org.oreilly.is.Percept;
 
 /**
@@ -45,6 +47,22 @@ public class MonkeyPerception implements Percept {
 		atHome = true;
 		onTheBox = false;
 		grabbed = false;
+	}
+
+	/**
+	 * Creates a new perception, setting the values retrieved from the internal
+	 * status <code>status</code>.
+	 * 
+	 * @param status the internal status of the environment
+	 */
+	public MonkeyPerception(EnvStatus status) {
+		bananasBunch = status.getBananasBunch();
+		box = status.getBox();
+		home = status.getHome();
+		monkey = status.getMonkey();
+		atHome = status.isAtHome();
+		onTheBox = status.isOnTheBox();
+		grabbed = status.isGrabbed();
 	}
 
 	/**
@@ -140,30 +158,32 @@ public class MonkeyPerception implements Percept {
 	public void setGrabbed(boolean grabbed) {
 		this.grabbed = grabbed;
 	}
-	
+
 	/**
 	 * @return the atHome
 	 */
 	public boolean isAtHome() {
 		return atHome;
 	}
-	
+
 	/**
-	 * @param atHome the atHome to set
+	 * @param atHome
+	 *            the atHome to set
 	 */
 	public void setAtHome(boolean atHome) {
 		this.atHome = atHome;
 	}
-	
+
 	/**
 	 * @return the onTheBox
 	 */
 	public boolean isOnTheBox() {
 		return onTheBox;
 	}
-	
+
 	/**
-	 * @param onTheBox the onTheBox to set
+	 * @param onTheBox
+	 *            the onTheBox to set
 	 */
 	public void setOnTheBox(boolean onTheBox) {
 		this.onTheBox = onTheBox;
