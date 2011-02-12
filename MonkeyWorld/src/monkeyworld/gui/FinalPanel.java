@@ -99,7 +99,7 @@ public class FinalPanel extends JPanel{
 					{
 						String tmp = chooseTime.getText();					
 						time = Integer.parseInt( tmp );
-						if( time == 0 )
+						if( time == 0 || time > 50 )
 							time = 5;
 					}
 					catch (Exception e) {

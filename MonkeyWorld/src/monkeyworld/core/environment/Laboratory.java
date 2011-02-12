@@ -17,10 +17,10 @@
  */
 package monkeyworld.core.environment;
 
-import monkeyworld.core.agent.Monkey;
 import monkeyworld.core.agent.MonkeyAction;
 import monkeyworld.core.agent.MonkeyPerception;
 
+import org.oreilly.is.Agent;
 import org.oreilly.is.Environment;
 
 /**
@@ -30,7 +30,7 @@ import org.oreilly.is.Environment;
  */
 public class Laboratory implements Environment {
 
-	private Monkey monkey;
+	private Agent monkey;
 	private EnvType envType;
 	private EnvStatus envStatus;
 	private EnvStatusModifier envModifier;
@@ -38,6 +38,7 @@ public class Laboratory implements Environment {
 	private boolean dynamicEnv = false;
 	private boolean userDefinedEnv = false;
 	private int intervalTime = 2;
+	private boolean invisible = false;
 
 	/**
 	 * Creates a new environment, which is passed a reference to the agent.
@@ -45,7 +46,7 @@ public class Laboratory implements Environment {
 	 * @param monkey
 	 *            the agent
 	 */
-	public Laboratory(Monkey monkey) {
+	public Laboratory(Agent monkey) {
 		this(monkey, EnvType.STATIC);
 	}
 
@@ -63,7 +64,7 @@ public class Laboratory implements Environment {
 	 *            <li>EnvType.USER_DEFINED</li>
 	 *            <ul>
 	 */
-	public Laboratory(Monkey monkey, EnvType envType) {
+	public Laboratory(Agent monkey, EnvType envType) {
 		this.monkey = monkey;
 		this.envType = envType;
 		envModifier = new EnvStatusModifier();
@@ -134,6 +135,19 @@ public class Laboratory implements Environment {
 	 */
 	public int getLength() {
 		return envStatus.getLength();
+	}
+	
+	public boolean isMonkeyAtHome()
+	{
+		return envStatus.isAtHome();
+	}	
+	
+	public boolean isInvisible() {
+		return invisible;
+	}
+
+	public void setInvisible(boolean invisible) {
+		this.invisible = invisible;
 	}
 
 	/**
@@ -222,7 +236,7 @@ public class Laboratory implements Environment {
 
 	@Override
 	public void step() {
-		MonkeyAction action = monkey.execute(new MonkeyPerception(envStatus));
+		MonkeyAction action = (MonkeyAction) monkey.execute(new MonkeyPerception(envStatus));
 		if (action.isGoOut()) {
 			envModifier.goOut();
 		} else if (action.isGoHome()) {
