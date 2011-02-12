@@ -18,6 +18,7 @@
 package monkeyworld.core.agent;
 
 
+import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
 /**
@@ -25,10 +26,13 @@ import org.oreilly.is.Percept;
  * 
  * @author Deep Blue Team
  */
-public class SecondAgent extends Monkey{
+public class SecondAgent implements Agent
+{
 	// This enum needs to know in which step we are.
 	private enum CURRENTSTEP { INIT, FIND_BOX, FIND_BANANA, KEEP_BANANA, DESCEND, BACK_BOX, BACK_AT_HOME, FINISH	};
 
+	private boolean alive = true;
+	
 	// Current step
 	private CURRENTSTEP step;
 	private int homePosition;
@@ -73,7 +77,7 @@ public class SecondAgent extends Monkey{
 			}
 			else
 			{				
-				if( monkeyPerception.getMonkey() >= 10 && step != CURRENTSTEP.FINISH ) 
+				if( monkeyPerception.isAtHome() && step != CURRENTSTEP.FINISH ) 
 				{
 					a = new MonkeyAction( ActionType.GO_OUT );
 					return a;
@@ -248,5 +252,15 @@ public class SecondAgent extends Monkey{
 		step = CURRENTSTEP.FINISH;
 		a = new MonkeyAction( ActionType.GO_HOME );		
 		return a;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return alive;
+	}
+
+	@Override
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 }

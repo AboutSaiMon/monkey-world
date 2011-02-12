@@ -22,6 +22,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -48,9 +50,9 @@ public class BottomPanel extends JPanel {
 	private int topPosition = 200;
 	private int bottomPosition = 350;
 	private boolean edit;
-	private int choice;
+	private int choice;	
 
-	public BottomPanel( int c, Laboratory l ) 
+	public BottomPanel( int c, final Laboratory l ) 
 	{
 		this.choice = c;
 		lab = l;
@@ -76,6 +78,22 @@ public class BottomPanel extends JPanel {
 		{
 			e.printStackTrace();
 		}
+		this.setFocusable( true );
+		this.addKeyListener( new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent arg0) {				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				l.setInvisible( true );
+			}
+		});
 
 		this.addMouseListener( new MouseListener() 
 		{
@@ -115,7 +133,7 @@ public class BottomPanel extends JPanel {
 					} 
 					else if( y > 350 && y < 410 ) 
 					{
-						if ( isEditable() && i != ( ( lab.getHome() - 1 )  % 10 ) )
+						if ( isEditable() )
 							lab.setBox( i );
 					}
 					else if( y > 410 && y < 470 )
@@ -139,7 +157,7 @@ public class BottomPanel extends JPanel {
 		for( int i = 0; i < 10; i++ ) 
 		{
 			graphics.drawRect( i * size + 100, topPosition, size, size );
-			if( i == lab.getBox() ) 
+			if( i == lab.getBox() && ( !lab.isInvisible() || lab.isGrabbed() ) ) 
 			{
 				graphics.fillRect( i * size + 100, bottomPosition, size, size );
 			}
@@ -147,7 +165,7 @@ public class BottomPanel extends JPanel {
 			{
 				graphics.drawRect( i * size + 100, bottomPosition, size, size );
 			}
-			if( i == ( lab.getHome() -1 )% 10 )
+			if( i == lab.getHome() && lab.isMonkeyAtHome() )
 			{
 				graphics.drawRect( i * size + 100, bottomPosition + 60, size, size );				
 			}
@@ -158,13 +176,14 @@ public class BottomPanel extends JPanel {
 		} 
 		else 
 		{
-			if( lab.getMonkey() >= 10 )
+			if( lab.isMonkeyAtHome() )
 			{				
-				graphics.drawImage( monkey, ( lab.getMonkey()-1 ) % 10 * size + 104, bottomPosition + 70, null );
+				graphics.drawImage( monkey, lab.getMonkey() * size + 104, bottomPosition + 70, null );
 			}
 			else
 			{			
-				graphics.drawImage( monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null );
+				if( lab.isGrabbed() || ( !lab.isInvisible() ) )					
+					graphics.drawImage( monkey, lab.getMonkey() * size + 102, bottomPosition + 10, null );
 			}
 		}
 	}

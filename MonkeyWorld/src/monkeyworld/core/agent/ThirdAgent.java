@@ -17,7 +17,7 @@
  */
 package monkeyworld.core.agent;
 
-
+import org.oreilly.is.Agent;
 import org.oreilly.is.Percept;
 
 /**
@@ -25,16 +25,26 @@ import org.oreilly.is.Percept;
  * 
  * @author Deep Blue Team
  */
-public class ThirdAgent extends Monkey 
+public class ThirdAgent implements Agent
 {
 
 	// This enum needs to know in which step we are.
-	private enum CURRENTSTEP { INIT, FIND_BOX, FIND_BANANA, KEEP_BANANA, DESCEND, BACK_BOX, BACK_AT_HOME, FINISH	};
+	private enum CURRENTSTEP { INIT, FIND_BOX, FIND_BANANA, KEEP_BANANA, DESCEND, GO_TO_POSITION, BACK_BOX, BACK_AT_HOME, FINISH };
 
+	private boolean alive = true;
 	// Current step
 	private CURRENTSTEP step;
 	private int homePosition;
 	private int initialBoxPosition;
+	
+	//How often the bananas moving.
+	private int changesNumber;
+	private int previousBananaPosition;
+	private int positionToGo;
+	
+	private int MAGICNUMBER = 15;
+	
+	private int[] bananasPositionArray = new int[ 10 ];
 
 	/**
 	 * Only invoke the super constructor and set the initial step.
@@ -43,6 +53,8 @@ public class ThirdAgent extends Monkey
 	{
 		super();
 		step = CURRENTSTEP.INIT;
+		changesNumber = 0;
+		previousBananaPosition = -1;		
 	}
 
 	@Override
@@ -58,7 +70,14 @@ public class ThirdAgent extends Monkey
 			return a;
 		}
 		
-		if( monkeyPerception.getMonkey() >= 10 && step != CURRENTSTEP.FINISH ) 
+		//Set previousBananaPosition if it isn't setted yet.
+		if( previousBananaPosition == -1 )
+		{
+			previousBananaPosition = monkeyPerception.getBananasBunch();
+			bananasPositionArray[ previousBananaPosition ]++;
+		}
+		
+		if( monkeyPerception.isAtHome() && step != CURRENTSTEP.FINISH ) 
 		{
 			a = new MonkeyAction( ActionType.GO_OUT );
 			return a;
@@ -78,16 +97,20 @@ public class ThirdAgent extends Monkey
 		{
 			return findBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch() );
 		} 
-		else if(step == CURRENTSTEP.KEEP_BANANA) 
+		else if( step == CURRENTSTEP.KEEP_BANANA ) 
 		{
 			return keepBanana( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch() );
-		} 
-		else if(step == CURRENTSTEP.DESCEND )
+		}
+		else if( step == CURRENTSTEP.GO_TO_POSITION )
+		{
+			return goToPosition( monkeyPerception.getBox() );
+		}
+		else if( step == CURRENTSTEP.DESCEND )
 		{
 			step = CURRENTSTEP.BACK_BOX;
 			return new MonkeyAction( ActionType.DESCEND );			
 		}
-		else if(step == CURRENTSTEP.BACK_BOX) 
+		else if( step == CURRENTSTEP.BACK_BOX ) 
 		{
 			return backBox( monkeyPerception.getBox(), monkeyPerception.getMonkey(), monkeyPerception.getBananasBunch(), monkeyPerception.isGrabbed() );
 		} 
@@ -125,6 +148,32 @@ public class ThirdAgent extends Monkey
 	private MonkeyAction findBanana( int boxPosition, int monkeyPosition, int bananaPosition ) 
 	{
 		MonkeyAction a = null;
+		
+		if( previousBananaPosition != bananaPosition )
+		{
+			changesNumber++;
+			bananasPositionArray[ bananaPosition ]++;
+			previousBananaPosition = bananaPosition;
+		}
+		
+		if( changesNumber == MAGICNUMBER )
+		{		
+			int max = -1;
+			int maxPosition = -1;
+			for( int i = 0; i < bananasPositionArray.length; i++ )
+			{
+				if( bananasPositionArray[ i ] > max )
+				{
+					max = bananasPositionArray[ i ];
+					maxPosition = i;
+				}
+			}
+			positionToGo = maxPosition;
+			step = CURRENTSTEP.GO_TO_POSITION;			
+			a = new MonkeyAction( ActionType.NO_OP );
+			return a;
+		}
+		
 		if( boxPosition == bananaPosition ) 
 		{
 			a = new MonkeyAction( ActionType.CLIMB );
@@ -145,22 +194,52 @@ public class ThirdAgent extends Monkey
 	}
 
 	private MonkeyAction keepBanana( int boxPosition, int monkeyPosition, int bananaPosition ) 
-	{
+	{						
 		MonkeyAction a;
 
 		if( boxPosition == monkeyPosition && monkeyPosition == bananaPosition ) 
-		{
+		{			
 			a = new MonkeyAction( ActionType.GRAB );
 			step = CURRENTSTEP.DESCEND;
 		}
 		else
 		{
-			a = new MonkeyAction( ActionType.DESCEND );
-			step = CURRENTSTEP.FIND_BANANA;
+			if( changesNumber == MAGICNUMBER )
+			{
+				a = new MonkeyAction( ActionType.NO_OP );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.DESCEND );
+				step = CURRENTSTEP.FIND_BANANA;
+			}
 		}
 		return a;
 	}
 
+	private MonkeyAction goToPosition( int boxPosition )
+	{
+		MonkeyAction a;
+		if( boxPosition == positionToGo )
+		{
+			a = new MonkeyAction( ActionType.CLIMB );
+			step = CURRENTSTEP.KEEP_BANANA;			
+			return a;
+		}
+		else
+		{
+			if( boxPosition > positionToGo )
+			{
+				a = new MonkeyAction( ActionType.MOVE_BOX_LEFT );
+			}
+			else
+			{
+				a = new MonkeyAction( ActionType.MOVE_BOX_RIGHT );
+			}
+		}
+		return a;
+	}
+	
 	private MonkeyAction backBox( int boxPosition, int monkeyPosition, int bananaPosition, boolean isGrabbed ) 
 	{
 		MonkeyAction a;
@@ -215,5 +294,15 @@ public class ThirdAgent extends Monkey
 		step = CURRENTSTEP.FINISH;
 		a = new MonkeyAction( ActionType.GO_HOME );		
 		return a;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return alive;
+	}
+
+	@Override
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 }
