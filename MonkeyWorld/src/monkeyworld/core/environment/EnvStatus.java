@@ -152,7 +152,7 @@ public class EnvStatus {
 	}
 	
 	/**
-	 * @param flag
+	 * @param onTheBox true if the monkey is on the box
 	 */
 	public void setOnTheBox(boolean onTheBox) {
 		if( onTheBox == true && monkey == box ) { 

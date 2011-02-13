@@ -59,7 +59,7 @@ public class Planner {
 	 *            the monkey/box's position (they have the same position)
 	 * @param banana
 	 *            the banana's position
-	 * @return
+	 * @return gets the plan
 	 */
 	public static LinkedList<String> getPlanUntilBanana(int monkeyAndBox,
 			int banana) {
@@ -84,7 +84,8 @@ public class Planner {
 		try {
 			// starts the process
 			process = processBuilder.start();
-			input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			input = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
 			plan = getPlan(input.readLine(), action);
 		} catch (IOException e) {
 			e.printStackTrace();
