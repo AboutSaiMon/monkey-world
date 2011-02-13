@@ -45,7 +45,7 @@
 	basato sulla logica dei predicati, per la rappresentazione di conoscenza incompleta.
 	
 	L'idea è la seguente. Viene calcolato solo metà piano, ovvero la parte in cui la scimmia esce dalla cuccia e ruba il casco di banane.
-	Questa metà è stata suddivisa in ulteriori due sotto pianificazioni, una in cui la scimmietta deve raggiungere
+	Questa metà è stata suddivisa in due ulteriori sotto pianificazioni, una in cui la scimmietta deve raggiungere
 	la cassa, ed un'altra in cui deve spostare la cassa fin sotto il casco di banane. In questo modo è stato possibile tagliare enormemente
 	lo spazio di ricerca, diminuendo di conseguenza la complessità computazionale (in termini di tempo) del calcolo dell'intero piano.
 	
@@ -55,12 +55,11 @@
 	la stringa e creare una struttura dati da dare in pasto all'agente, sotto forma di lista delle azioni da compiere.
 	
 	Come specificato in precedenza, il piano calcolato è solo metà. Questo perché la sequenza di azioni
-	da compiere per riportare la cassa al suo posto e ritornare a cuccia è perfettamente speculare al piano già calcolato, quindi
-	sarebbe stato inutile sprecare del tempo per calcolare qualcosa che è già stato calcolato in precedenza. E' bastato
-	invertire la sequenza delle azioni, dove ogni azione era l'opposta di quella effettuata nella prima fase.
+	da compiere per riportare la cassa al suo posto e ritornare a cuccia è perfettamente speculare alla prima. E' bastato
+	dunque, invertire la sequenza, e per ogni azione della prima fase, utilizzare la sua opposta.
 	
 	Ad esempio: se nella prima fase la scimmia si sposta a destra per due volte, e poi sposta la cassa a sinistra per tre volte,
-	nella seconda fase, invertendo la sequenza, avremo che la scimmia dovrà
+	nella seconda fase, invertendo la sequenza, la scimmietta dovrà
 	prima spostare la cassa per tre volte, ma questa volta a destra, e poi dovrà spostarsi per due volte, ma questa volta a sinistra.
 	
     \section{Ambiente dinamico}
