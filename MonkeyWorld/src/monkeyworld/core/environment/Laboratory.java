@@ -40,6 +40,10 @@ public class Laboratory implements Environment {
 	private int intervalTime = 2;
 	private boolean invisible = false;
 
+	private static final int TOTAL_SCORE = 600;
+	private static final int LOWER_PENALTY = 3;
+	private static final int HIGHER_PENALTY = 6;
+
 	/**
 	 * Creates a new environment, which is passed a reference to the agent.
 	 * 
@@ -136,16 +140,31 @@ public class Laboratory implements Environment {
 	public int getLength() {
 		return envStatus.getLength();
 	}
-	
-	public boolean isMonkeyAtHome()
-	{
+
+	/**
+	 * Tells if the monkey is at home or not.
+	 * 
+	 * @return true if the monkey is at home
+	 */
+	public boolean isMonkeyAtHome() {
 		return envStatus.isAtHome();
-	}	
-	
+	}
+
+	/**
+	 * Tells if the monkey is invisible, or not.
+	 * 
+	 * @return true if the monkey is invisible
+	 */
 	public boolean isInvisible() {
 		return invisible;
 	}
 
+	/**
+	 * Sets the invisibility to the monkey.
+	 * 
+	 * @param invisible
+	 *            true to set the invisibility
+	 */
 	public void setInvisible(boolean invisible) {
 		this.invisible = invisible;
 	}
@@ -178,6 +197,11 @@ public class Laboratory implements Environment {
 		return envStatus.isGrabbed();
 	}
 
+	/**
+	 * Tells if the monkey is on the box or not.
+	 * 
+	 * @return true if the monkey is on the box
+	 */
 	public boolean isOnTheBox() {
 		return envStatus.isOnTheBox();
 	}
@@ -234,27 +258,47 @@ public class Laboratory implements Environment {
 		return !monkey.isAlive();
 	}
 
+	/**
+	 * Adds the score to the total.
+	 * 
+	 * @param penalty
+	 *            the score tu sum
+	 */
+	public void penalizeWity(int penalty) {
+		envStatus.penalizeWith(penalty);
+	}
+
 	@Override
 	public void step() {
-		MonkeyAction action = (MonkeyAction) monkey.execute(new MonkeyPerception(envStatus));
+		MonkeyPerception perception = new MonkeyPerception(envStatus);
+		MonkeyAction action = (MonkeyAction) monkey.execute(perception);
 		if (action.isGoOut()) {
 			envModifier.goOut();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoHome()) {
 			envModifier.goHome();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoLeft()) {
 			envModifier.goLeft();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoRight()) {
 			envModifier.goRight();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isMoveBoxLeft()) {
 			envModifier.moveBoxLeft();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isMoveBoxRight()) {
 			envModifier.moveBoxRight();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isClimb()) {
 			envModifier.climb();
+			envStatus.penalizeWith(HIGHER_PENALTY);
 		} else if (action.isDescend()) {
 			envModifier.descend();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGrab()) {
 			envModifier.grab();
+			envStatus.penalizeWith(LOWER_PENALTY);
 		}
 	}
 
@@ -276,9 +320,14 @@ public class Laboratory implements Environment {
 
 	@Override
 	public double getPerformanceMeasure() {
-		return 0;
+		int score = TOTAL_SCORE - envStatus.getPenalty();
+		if (score > 0) {
+			return score * 100 / TOTAL_SCORE;
+		} else {
+			return 0;
+		}
 	}
-	
+
 	/*
 	 * This method may be invocated if
 	 */
@@ -293,7 +342,7 @@ public class Laboratory implements Environment {
 		perception.setOnTheBox(envStatus.isOnTheBox());
 		return perception;
 	}
-	
+
 	private void sleep() {
 		try {
 			Thread.sleep(300);

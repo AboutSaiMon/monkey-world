@@ -30,6 +30,8 @@ public class ThreadBanana extends Thread {
 	private Laboratory lab;
 	private int intervalTime;
 	private Random random;
+	
+	private static final int PENALTY = 9;
 
 	/**
 	 * Creates a new thread, accepting a reference to the environment, as input
@@ -37,8 +39,8 @@ public class ThreadBanana extends Thread {
 	 */
 	public ThreadBanana(Laboratory laboratory) {
 		lab = laboratory;
-		random = new Random(intervalTime);
 		intervalTime = 5000;
+		random = new Random(intervalTime);
 	}
 
 	/**
@@ -61,6 +63,7 @@ public class ThreadBanana extends Thread {
 				e.printStackTrace();
 			}
 			lab.setBananasBunch(getPosition());
+			lab.penalizeWity(PENALTY);
 		}
 	}
 

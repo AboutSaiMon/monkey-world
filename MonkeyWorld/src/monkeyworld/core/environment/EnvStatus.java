@@ -36,7 +36,7 @@ public class EnvStatus {
 	private boolean onTheBox;
 	private boolean grabbed;
 	private boolean atHome;
-	private int counter;
+	private int penalty;
 
 	/**
 	 * Create a new status with 10 locations.
@@ -62,28 +62,21 @@ public class EnvStatus {
 		onTheBox = false;
 		grabbed = false;
 		bananasLock = new ReentrantLock(true);
-		counter = 0;
+		penalty = 0;
 	}
 
 	/**
-	 * @return true if it is the first step of the environment.
+	 * @return the score
 	 */
-	public boolean isFirstStep() {
-		return counter == 0;
+	public int getPenalty() {
+		return penalty;
 	}
-
+	
 	/**
-	 * Increments the step counter.
+	 * @param penalty the score to sum to the total
 	 */
-	public void incrementCounter() {
-		counter++;
-	}
-
-	/**
-	 * @return the number of step performed until now.
-	 */
-	public int getCounter() {
-		return counter;
+	public void penalizeWith(int penalty) {
+		this.penalty += penalty;
 	}
 
 	private void checkLength(int length) {
