@@ -41,19 +41,19 @@ public class LaboratoryTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void setBananasPosition() {
 		Laboratory lab = new Laboratory(monkey);
-		lab.setBananasBunch(10);
+		lab.setBananasBunch(-30);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void setBoxPosition() {
 		Laboratory lab = new Laboratory(monkey);
-		lab.setBox(1);
+		lab.setBox(87);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void setHomePosition() {
 		Laboratory lab = new Laboratory(monkey);
-		lab.setHome(1);
+		lab.setHome(-1);
 	}
 	
 	@Test
@@ -64,8 +64,8 @@ public class LaboratoryTest {
 		lab.setHome(2);
 		assertThat(lab.getBananasBunch(), is(equalTo(0)));
 		assertThat(lab.getBox(), is(equalTo(1)));
-		assertThat(lab.getHome(), is(equalTo(13)));
-		assertThat(lab.getMonkey(), is(equalTo(13)));
+		assertThat(lab.getHome(), is(equalTo(2)));
+		assertThat(lab.getMonkey(), is(equalTo(2)));
 	}
 	
 	@Test

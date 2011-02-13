@@ -17,34 +17,55 @@
  */
 package monkeyworld.core.agent;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+
+import java.util.LinkedList;
+
 import monkeyworld.core.environment.EnvStatus;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author Deep Blue Team
  */
 public class MonkeyTest {
 
-	// [go(1), go(2), go(3), go(4), go(5), go(6), go(7), go(8), moveBox(7),
-	// moveBox(6), moveBox(5), moveBox(4), climb, grab, grab, climb, moveBox(4),
-	// moveBox(5), moveBox(6), moveBox(7), go(8), go(7), go(6), go(5), go(4), go(3),
-	// go(2), go(1)]
+	private Monkey monkey;
+	private EnvStatus status;
+	private LinkedList<MonkeyAction> plan;
+
+	@Before
+	public void setUp() {
+		monkey = new Monkey();
+		status = new EnvStatus();
+		status.setHome(1);
+		status.setBox(4);
+		status.setBananasBunch(4);
+		plan = new LinkedList<MonkeyAction>();
+		plan.add(new MonkeyAction(ActionType.GO_OUT));
+		plan.add(new MonkeyAction(ActionType.GO_RIGHT));
+		plan.add(new MonkeyAction(ActionType.GO_RIGHT));
+		plan.add(new MonkeyAction(ActionType.GO_RIGHT));
+		plan.add(new MonkeyAction(ActionType.CLIMB));
+		plan.add(new MonkeyAction(ActionType.GRAB));
+		plan.add(new MonkeyAction(ActionType.DESCEND));
+		plan.add(new MonkeyAction(ActionType.GO_LEFT));
+		plan.add(new MonkeyAction(ActionType.GO_LEFT));
+		plan.add(new MonkeyAction(ActionType.GO_LEFT));
+		plan.add(new MonkeyAction(ActionType.GO_HOME));
+	}
+
 	@Test
 	public void test() {
-		Monkey m = new Monkey();
-		EnvStatus status = new EnvStatus();
-		status.setHome(3);
-		status.setBox(5);
-		status.setBananasBunch(2);
-		MonkeyPerception percept = new MonkeyPerception();
-		percept.setBananasBunch(status.getBananasBunch());
-		percept.setBox(status.getBox());
-		percept.setHome(status.getHome());
-		percept.setMonkey(status.getMonkey());
-		System.out.println("Home: " + percept.getHome());
-		System.out.println("Monkey: " + percept.getMonkey());
+		MonkeyPerception percept = new MonkeyPerception(status);
+		MonkeyAction action = monkey.execute(percept);
+		while (monkey.isAlive()) {
+			assertThat(action, equalTo(plan.remove()));
+			action = monkey.execute(percept);
+		}
+		assertThat(monkey.isAlive(), equalTo(false));
 	}
-	
 }

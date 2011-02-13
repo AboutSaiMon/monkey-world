@@ -162,7 +162,11 @@ public class EnvStatus {
 	 * @param flag
 	 */
 	public void setOnTheBox(boolean onTheBox) {
-		this.onTheBox = onTheBox;
+		if( onTheBox == true && monkey == box ) { 
+			this.onTheBox = true;
+		} else if( onTheBox == false ){
+			this.onTheBox = false;
+		}
 	}
 
 	/**
@@ -204,6 +208,7 @@ public class EnvStatus {
 		checkPosition(position);
 		home = position;
 		monkey = home;
+		atHome = true;
 	}
 	
 	public boolean isAtHome() {
@@ -232,6 +237,7 @@ public class EnvStatus {
 	public void setMonkey(int position) {
 		checkPosition(position);
 		monkey = position;
+		atHome = false;
 	}
 
 	/**

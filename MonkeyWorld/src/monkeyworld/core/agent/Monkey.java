@@ -50,15 +50,20 @@ public class Monkey implements Agent {
 	public MonkeyAction execute(Percept percept) {
 		// if this method is called for the first time
 		if (firstStep) {
+			// sets the flag to false
 			firstStep = false;
 			// builds the plan
 			buildPlan(percept);
 		}
 		MonkeyAction action = null;
+		// if the plan list is not empty
 		if (!plan.isEmpty()) {
+			// creates a new action with the next in the list
 			action = new MonkeyAction(plan.remove());
 		} else {
+			// otherwise, sets the alive status to false
 			setAlive(false);
+			// and returns a No Operation
 			action = new MonkeyAction(ActionType.NO_OP);
 		}
 		return action;
@@ -80,7 +85,7 @@ public class Monkey implements Agent {
 	private void buildPlan(Percept percept) {
 		// adds the first action
 		plan.add(ActionType.GO_OUT);
-		// create the first half of the plan, until the bananas bunch
+		// creates the first half of the plan, until the bananas bunch
 		oneWayPlan(percept);
 		// gets the first half of the plan reversed
 		LinkedList<ActionType> reversedActions = getReversedActions();
@@ -88,7 +93,7 @@ public class Monkey implements Agent {
 		plan.add(ActionType.CLIMB);
 		plan.add(ActionType.GRAB);
 		plan.add(ActionType.DESCEND);
-		// add to the plan the opposite action of the reversed plan
+		// add to the plan the opposite actions of the reversed plan
 		for (ActionType action : reversedActions) {
 			if (action.equals(ActionType.MOVE_BOX_LEFT)) {
 				plan.add(ActionType.MOVE_BOX_RIGHT);

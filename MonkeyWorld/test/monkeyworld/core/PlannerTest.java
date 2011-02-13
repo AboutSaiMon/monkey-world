@@ -17,14 +17,15 @@
  */
 package monkeyworld.core;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.junit.Assert.assertThat;
+
 import java.util.LinkedList;
 
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.everyItem;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 /**
  *
@@ -32,6 +33,10 @@ import static org.junit.Assert.assertThat;
  */
 public class PlannerTest {
 
+	public void ciao() {
+		
+	}
+	
 	@Test
 	public void untilBox1() {
 		LinkedList<String> plan = Planner.getPlanUntilBox(3, 0);
