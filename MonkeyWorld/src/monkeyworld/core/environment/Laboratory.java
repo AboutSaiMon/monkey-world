@@ -320,7 +320,8 @@ public class Laboratory implements Environment {
 
 	@Override
 	public double getPerformanceMeasure() {
-		int score = TOTAL_SCORE - envStatus.getPenalty();
+		//TODO: Talk about: No increase if banana is grabbed. Monkey could be stand still and obtain higher value of performance measure.		
+		int score = TOTAL_SCORE - envStatus.getPenalty();		
 		if (score > 0) {
 			return score * 100 / TOTAL_SCORE;
 		} else {

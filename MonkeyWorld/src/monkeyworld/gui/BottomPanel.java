@@ -151,6 +151,9 @@ public class BottomPanel extends JPanel {
 	public void paintComponent( Graphics graphics ) 
 	{
 		super.paintComponent( graphics );
+		
+		graphics.drawString( "Performance Measure: " + lab.getPerformanceMeasure(), 300, topPosition -50 );
+		
 		if( !lab.isGrabbed() )
 			graphics.drawImage( bananas, lab.getBananasBunch() * size + 105, topPosition + 5, null );
 		
