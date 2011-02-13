@@ -1,6 +1,6 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[italian]{babel}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 
 \title{Monkey World}
 \author{
@@ -64,7 +64,31 @@
 	prima spostare la cassa per tre volte, ma questa volta a destra, e poi dovrà spostarsi per due volte, ma questa volta a sinistra.
 	
     \section{Ambiente dinamico}
+	In questo tipo di ambiente, la banana è spostata in una posizione casuale alla scadenza di un timer impostato dall'utente.
+	La scimmia deve, quindi, adattarsi di conseguenza alla nuova situazione dell'ambiente. 
+	In questo caso, la scimmia apprende da un'osservazione del mondo in più stati dopo quanto la banana è spostata.
+	
+	Dopo questa prima fase di studio, ad ogni spostamento della banana, la scimmia calcola il numero di passi necessario a raggiungere la banana
+        e confronta questo numero con il timer impostato. A questo punto, decide di spostarsi solo se riesce a prendere la banana nel tempo fissato.
+        
+	Un'ulteriore raffinamento è il caso in cui la banana si sposta ad ogni passo. Infatti, normalmente la scimmia non riuscirebbe mai a prendere 
+	la banana in quanto per salire sulla scatola e per compiere l'operazione di presa sono necessari due passi. Quindi, abbiamo approntato una
+	variante all'algoritmo che in questo specifico caso fa sì che la scimmia salga subito sulla scatola e aspetti che la banana arrivi sopra la sua posizione. 
+
+	E' utile notare che per la legge dei grandi numeri, questo algoritmo consente alla scimmia di prendere sempre la banana.
 
     \section{Ambiente dinamico, con intervento dell'utente}
+        Nell'ultimo caso sottoposto, il mondo evolve in questo senso: la banana è spostata dall'utente in un punto qualsiasi delle locazioni possibili e ad
+	istanti di tempo casuali.
 
+	E' importante notare, che in questo caso, la scimmia potrebbe non arrivare mai a prendere la banana. L'utente, infatti, ha sempre la possibilità di
+	spostarla nel momento in cui la scimmia sta per prenderla.
+
+	L'agente è stato progettato di conseguenza. In una prima fase iniziale, segue l'andamento della banana sperando di
+	riuscire a prenderla. Durante queste azioni, la scimmia tiene traccia di tutti gli spostamenti della banana, conteggiando il numero di volte in cui è stata
+	spostata nella i-sima locazione.
+	Quindi, dopo un certo numero di fallimenti, la scimmia decide che è il momento di fermarsi. Calcola la locazione che ha ospitato più volte la
+	banana, e aspetta lì salendo sulla scatola. In questo tipo di ambiente,	non abbiamo rassicurazioni sul fatto che la scimmia riesca a prendere la
+	banana. Infatti, l'agente può solamente sperare che l'utente segua un pattern prefissato e che quindi alla fine l'algoritmo converga su un
+	risultato.
 \end{document}
