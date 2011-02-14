@@ -46,8 +46,11 @@ public class LaboratoryThread extends Thread {
 			lab.penalizeWity(Penalty.WEIGHT);
 			bottomPanel.repaint();
 			try 
-			{				
-				sleep( 600 );
+			{	
+				if(!lab.isInvisible())
+					sleep( 600 );
+				else
+					sleep( 200 );
 				if( lab.isDynamic() )
 				{					
 					if( stepCount == lab.getIntervalTime() )
