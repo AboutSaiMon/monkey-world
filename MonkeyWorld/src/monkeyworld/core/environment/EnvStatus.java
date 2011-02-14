@@ -20,6 +20,8 @@ package monkeyworld.core.environment;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import monkeyworld.gui.Penalty;
+
 /**
  * This is the internal state of the environment.
  * 

@@ -19,6 +19,7 @@ package monkeyworld.core.environment;
 
 import monkeyworld.core.agent.MonkeyAction;
 import monkeyworld.core.agent.MonkeyPerception;
+import monkeyworld.gui.Penalty;
 
 import org.oreilly.is.Agent;
 import org.oreilly.is.Environment;
@@ -39,10 +40,7 @@ public class Laboratory implements Environment {
 	private boolean userDefinedEnv = false;
 	private int intervalTime = 2;
 	private boolean invisible = false;
-
-	private static final int TOTAL_SCORE = 600;
-	private static final int LOWER_PENALTY = 3;
-	private static final int HIGHER_PENALTY = 6;
+	double goal;
 
 	/**
 	 * Creates a new environment, which is passed a reference to the agent.
@@ -73,6 +71,7 @@ public class Laboratory implements Environment {
 		this.envType = envType;
 		envModifier = new EnvStatusModifier();
 		envStatus = envModifier.getStatus();
+		goal = 0;
 		if (this.envType.equals(EnvType.STATIC)) {
 			staticEnv = true;
 		} else if (this.envType.equals(EnvType.DYNAMIC)) {
@@ -274,32 +273,24 @@ public class Laboratory implements Environment {
 		MonkeyAction action = (MonkeyAction) monkey.execute(perception);
 		if (action.isGoOut()) {
 			envModifier.goOut();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoHome()) {
 			envModifier.goHome();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoLeft()) {
 			envModifier.goLeft();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGoRight()) {
 			envModifier.goRight();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isMoveBoxLeft()) {
 			envModifier.moveBoxLeft();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isMoveBoxRight()) {
 			envModifier.moveBoxRight();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isClimb()) {
 			envModifier.climb();
-			envStatus.penalizeWith(HIGHER_PENALTY);
 		} else if (action.isDescend()) {
 			envModifier.descend();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		} else if (action.isGrab()) {
 			envModifier.grab();
-			envStatus.penalizeWith(LOWER_PENALTY);
 		}
+		envStatus.penalizeWith(Penalty.WEIGHT);
 	}
 
 	@Override
@@ -320,12 +311,14 @@ public class Laboratory implements Environment {
 
 	@Override
 	public double getPerformanceMeasure() {
-		//TODO: Talk about: No increase if banana is grabbed. Monkey could be stand still and obtain higher value of performance measure.		
-		int score = TOTAL_SCORE - envStatus.getPenalty();		
-		if (score > 0) {
-			return score * 100 / TOTAL_SCORE;
-		} else {
+		if( isGrabbed() && goal == 0 ) {
+			goal = 1;
+		}
+		int penalty = envStatus.getPenalty();
+		if( penalty == 0 ) {
 			return 0;
+		} else {
+			return goal / envStatus.getPenalty() * 100;
 		}
 	}
 

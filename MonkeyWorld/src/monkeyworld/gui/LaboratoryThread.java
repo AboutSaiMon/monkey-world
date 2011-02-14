@@ -43,6 +43,7 @@ public class LaboratoryThread extends Thread {
 		while ( !lab.isDone() ) 
 		{
 			lab.step();
+			lab.penalizeWity(Penalty.WEIGHT);
 			bottomPanel.repaint();
 			try 
 			{				
