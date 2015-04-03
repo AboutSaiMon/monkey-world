@@ -51,7 +51,6 @@ public class PrincipalPanel extends JPanel {
 		mode.addItem("Dynamic Environment");
 
 		mode.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				choice = mode.getSelectedIndex();
 			}
@@ -60,7 +59,6 @@ public class PrincipalPanel extends JPanel {
 		JButton start = new JButton("Start");
 		start.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
 				

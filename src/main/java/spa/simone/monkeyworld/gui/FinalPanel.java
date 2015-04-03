@@ -79,7 +79,6 @@ public class FinalPanel extends JPanel {
         final JButton start = new JButton("Start");
         start.addActionListener(new ActionListener() {
 
-            @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (choice == 1) {
                     int time = 1;

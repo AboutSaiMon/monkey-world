@@ -17,6 +17,8 @@
  */
 package spa.simone.monkeyworld.core;
 
+import spa.simone.monkeyworld.Utils;
+
 import java.io.*;
 import java.util.LinkedList;
 
@@ -28,10 +30,10 @@ import java.util.LinkedList;
 public class Planner {
 
     private static final String[] UNTIL_BOX_ARGS = new String[]{"dlv",
-            "-silent", "-FPsec", "k/untilBox.plan", "k/goal.plan",
+            "-silent", "-FPsec", "k/untilBox.plan", "temp/goal.plan",
             "k/monkey.dl"};
     private static final String[] UNTIL_BANANA_ARGS = new String[]{"dlv",
-            "-silent", "-FPsec", "k/untilBanana.plan", "k/goal.plan",
+            "-silent", "-FPsec", "k/untilBanana.plan", "temp/goal.plan",
             "k/monkey.dl"};
 
     /**
@@ -54,8 +56,7 @@ public class Planner {
      */
     public static LinkedList<String> getPlanUntilBanana(int monkeyAndBox,
                                                         int banana) {
-        return execute(KPlannerAction.MOVE_BOX,
-                getGoalUntilBanana(monkeyAndBox, banana));
+        return execute(KPlannerAction.MOVE_BOX, getGoalUntilBanana(monkeyAndBox, banana));
     }
 
     /*
@@ -121,7 +122,7 @@ public class Planner {
         findBox.append("). at(box, ").append(box);
         findBox.append("). goal: at(monkey, P), at(box, P) ? (");
         findBox.append(planLength).append(")");
-        return print(findBox);
+        return Utils.writeGoalFile(findBox.toString());
     }
 
     /*
@@ -137,26 +138,7 @@ public class Planner {
         findBanana.append("goal:");
         findBanana.append("at(monkey, P), at(box, P), at(banana, P)?");
         findBanana.append("(").append(planLength).append(")");
-        return print(findBanana);
-    }
-
-    /*
-     * Creates the goal file.
-     */
-    private static File print(StringBuilder goal) {
-        File goalFile = new File("k/goal.plan");
-        PrintWriter out = null;
-        try {
-            out = new PrintWriter(goalFile);
-            out.println(goal.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-        }
-        return goalFile;
+        return Utils.writeGoalFile(findBanana.toString());
     }
 
 }

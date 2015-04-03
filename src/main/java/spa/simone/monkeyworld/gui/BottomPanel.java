@@ -26,6 +26,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import static spa.simone.monkeyworld.Utils.getImage;
 
 /**
  * @author Deep Blue Team
@@ -52,10 +53,9 @@ public class BottomPanel extends JPanel {
 
         this.setBackground(Color.WHITE);
 
-        Toolkit t = Toolkit.getDefaultToolkit();
-        monkey = t.getImage("src" + File.separator + "resources" + File.separator + "scimmia.jpg");
-        box = t.getImage("src" + File.separator + "resources" + File.separator + "box.png");
-        bananas = t.getImage("src" + File.separator + "resources" + File.separator + "bananas.jpg");
+        monkey = getImage("images/scimmia.jpg");
+        box = getImage("images/box.png");
+        bananas = getImage("images/bananas.jpg");
         MediaTracker mt = new MediaTracker(this);
         mt.addImage(monkey, 0);
         mt.addImage(box, 1);
